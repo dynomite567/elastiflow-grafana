@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 30,
+  "id": null,
   "links": [
     {
       "asDropdown": true,
@@ -758,5 +758,5 @@
   "timezone": "browser",
   "title": "GeoIP",
   "uid": "4ba8a237-37b5-4c17-a2f5-7a5023935317",
-  "version": 2
+  "version": 1
 }

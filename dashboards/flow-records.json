@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 29,
+  "id": null,
   "links": [
     {
       "asDropdown": true,
@@ -338,7 +338,7 @@
         {
           "direction": "backward",
           "editorMode": "code",
-          "expr": "{service_name=\"elastiflow\"} | json | keep flow_export_version_name, flow_conversation_id, host_name, client_domain, server_domain, flow_server_l4_port_name, network_bytes, network_packets | flow_conversation_id!=``",
+          "expr": "{service_name=\"elastiflow\"} | json | keep flow_export_version_name, flow_conversation_id, host_name, client_domain, server_domain, flow_server_l4_port_name, network_bytes, network_packets",
           "maxLines": 10000,
           "queryType": "range",
           "refId": "A"
@@ -391,6 +391,7 @@
   "templating": {
     "list": [
       {
+        "baseFilters": [],
         "datasource": {
           "type": "loki",
           "uid": "P8E80F9AEF21F6940"
@@ -419,5 +420,5 @@
   "timezone": "browser",
   "title": "Flow Records",
   "uid": "ba4aa5d7-ca63-4388-b87b-03ff98b8d65c",
-  "version": 1
+  "version": 2
 }

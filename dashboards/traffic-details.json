@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 36,
+  "id": null,
   "links": [
     {
       "asDropdown": true,
@@ -1556,5 +1556,5 @@
   "timezone": "browser",
   "title": "Traffic Details",
   "uid": "cekutlyl68dfka",
-  "version": 2
+  "version": 1
 }
