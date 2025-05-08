@@ -1,0 +1,10 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'loki-metrics'
+    metrics_path: /metrics
+
+    scheme: http
+    static_configs:
+      - targets: ['192.168.0.90:3100']

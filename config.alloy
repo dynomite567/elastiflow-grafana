@@ -1,0 +1,60 @@
+loki.process "logprocess" {
+        forward_to = [loki.write.default.receiver]
+
+
+        stage.replace {
+                expression = `(\@timestamp)`
+                replace    = "timestamp"
+        }
+
+        stage.json {
+                expressions = {
+                        extracted_timestamp = "timestamp",
+                }
+        }
+        stage.timestamp {
+                source = "extracted_timestamp"
+                format = "UnixMs"
+        }
+}
+
+loki.relabel "kafka" {
+	forward_to = [loki.write.default.receiver]
+
+	rule {
+		source_labels = ["__meta_kafka_topic"]
+		target_label  = "topic"
+	}
+
+	rule {
+		source_labels = ["__meta_kafka_partition"]
+		target_label  = "partition"
+	}
+
+	rule {
+		source_labels = ["__meta_kafka_group_id"]
+		target_label  = "group"
+	}
+}
+
+loki.source.kafka "kafkadata" {
+	brokers  = ["kafka_broker:9092"]
+	topics   = ["elastiflow-flow-codex-1.0"]
+	version  = "2.0.0"
+	labels   = { service = "elastiflow" }
+        forward_to    = [loki.process.logprocess.receiver]
+	relabel_rules = loki.relabel.kafka.rules        
+}
+
+loki.write "default" {
+	endpoint {
+		url = "http://loki:3100/loki/api/v1/push"
+
+		basic_auth {
+			username = "none"
+			password = "none"
+		}
+	}
+	external_labels = {}
+}
+
