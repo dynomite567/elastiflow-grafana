@@ -1,0 +1,776 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations \u0026 Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 34,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": ["ElastiFlow"],
+      "targetBlank": false,
+      "title": "ElastiFlow Dashboards",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
+  "panels": [
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "left",
+            "barAlignment": 0,
+            "barWidthFactor": 0.9,
+            "drawStyle": "bars",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "custom.drawStyle",
+                "value": "line"
+              },
+              {
+                "id": "custom.lineInterpolation",
+                "value": "linear"
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 2
+              },
+              {
+                "id": "custom.stacking",
+                "value": {
+                  "group": "A",
+                  "mode": "none"
+                }
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "hidden"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-BlPu",
+                  "seriesBy": "last"
+                }
+              },
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 3,
+      "interval": "1m",
+      "options": {
+        "legend": {
+          "calcs": ["mean"],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "topk(10, sum by(flow_server_l4_port_name) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [1m])*8/(60000/1000)))",
+          "queryType": "range",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "sum by(network_bytes) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [1m])*8/(60000/1000))",
+          "hide": false,
+          "queryType": "range",
+          "refId": "B"
+        }
+      ],
+      "title": "Throughput (bits/s)",
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "valueLabel": "flow_server_l4_port_name"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "Value",
+            "renamePattern": "Throughput"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "semi-dark-blue",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 10
+      },
+      "id": 4,
+      "interval": "1m",
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": ["sum"],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "topk(5, sum by(network_transport) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [$__interval])))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Top Protocols (bytes)",
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "valueLabel": "network_transport"
+          }
+        }
+      ],
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "light-blue",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 10
+      },
+      "id": 5,
+      "interval": "1m",
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": ["sum"],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "topk(10, sum by(flow_server_l4_port_name) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [$__auto])))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Top Services (bytes)",
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "valueLabel": "flow_server_l4_port_name"
+          }
+        }
+      ],
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto",
+              "wrapText": false
+            },
+            "inspect": false
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Bytes"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 12,
+        "x": 0,
+        "y": 20
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | json | keep flow_server_l4_port_name, network_bytes, network_packets, network_community_id",
+          "maxLines": 10000,
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Top Services",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "delimiter": "|",
+            "format": "auto",
+            "source": "labels"
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "network_bytes"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "network_packets"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "client_domain": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "client_ip": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "flow_conversation_id": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "flow_server_l4_port_name": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "network_bytes": {
+                "aggregations": ["sum"],
+                "operation": "aggregate"
+              },
+              "network_community_id": {
+                "aggregations": ["distinctCount"],
+                "operation": "aggregate"
+              },
+              "network_packets": {
+                "aggregations": ["sum"],
+                "operation": "aggregate"
+              },
+              "server_domain": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "server_ip": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "client_ip": false
+            },
+            "includeByName": {},
+            "indexByName": {
+              "flow_server_l4_port_name": 0,
+              "network_bytes (sum)": 1,
+              "network_community_id (distinctCount)": 3,
+              "network_packets (sum)": 2
+            },
+            "renameByName": {
+              "client_domain": "Client",
+              "client_ip": "Client IP",
+              "flow_conversation_id": "Conversation ID",
+              "flow_server_l4_port_name": "Services",
+              "network_bytes (sum)": "Bytes",
+              "network_community_id (count)": "Sessions",
+              "network_community_id (distinctCount)": "Sessions",
+              "network_packets (sum)": "Packets",
+              "server_domain": "Server",
+              "server_ip": "Server IP"
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Bytes"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto",
+              "wrapText": false
+            },
+            "inspect": false
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Bytes"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 12,
+        "x": 12,
+        "y": 20
+      },
+      "id": 6,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | json | keep network_transport, network_bytes, network_packets, network_community_id",
+          "maxLines": 10000,
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Top Layer-4 Protocols",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "delimiter": "|",
+            "format": "auto",
+            "source": "labels"
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "network_bytes"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "network_packets"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "client_domain": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "client_ip": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "flow_conversation_id": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "network_bytes": {
+                "aggregations": ["sum"],
+                "operation": "aggregate"
+              },
+              "network_community_id": {
+                "aggregations": ["distinctCount"],
+                "operation": "aggregate"
+              },
+              "network_packets": {
+                "aggregations": ["sum"],
+                "operation": "aggregate"
+              },
+              "network_transport": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "server_domain": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "server_ip": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "client_ip": false
+            },
+            "includeByName": {},
+            "indexByName": {
+              "network_bytes (sum)": 1,
+              "network_community_id (distinctCount)": 3,
+              "network_packets (sum)": 2,
+              "network_transport": 0
+            },
+            "renameByName": {
+              "client_domain": "Client",
+              "client_ip": "Client IP",
+              "flow_conversation_id": "Conversation ID",
+              "network_bytes (sum)": "Bytes",
+              "network_community_id (count)": "Sessions",
+              "network_community_id (distinctCount)": "Sessions",
+              "network_packets (sum)": "Packets",
+              "network_transport": "Layer-4 Protocol",
+              "server_domain": "Server",
+              "server_ip": "Server IP"
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Bytes"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": ["ElastiFlow"],
+  "templating": {
+    "list": [
+      {
+        "datasource": {
+          "type": "loki",
+          "uid": "P8E80F9AEF21F6940"
+        },
+        "defaultKeys": [
+          {
+            "text": "Flow Exporter",
+            "value": "host_name\r"
+          },
+          {
+            "text": "Client",
+            "value": " client_domain\r"
+          },
+          {
+            "text": "Server",
+            "value": " server_domain\r"
+          },
+          {
+            "text": "Service",
+            "value": " flow_server_l4_port_name\r"
+          },
+          {
+            "text": "Traffic Locality",
+            "value": " flow_locality"
+          }
+        ],
+        "filters": [],
+        "name": "Filter",
+        "type": "adhoc"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Top-N - Services",
+  "uid": "1be5d311-985f-4cf1-87dc-5f861b53daf0",
+  "version": 1
+}

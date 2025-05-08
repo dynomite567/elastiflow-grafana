@@ -1,0 +1,868 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations \u0026 Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 32,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": ["ElastiFlow"],
+      "targetBlank": false,
+      "title": "ElastiFlow Dashboards",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
+  "panels": [
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "sum(count_over_time({service_name=\"elastiflow\"} | json sec_threat_name=`[\"sec.threat.name\"]`, network_community_id=`[\"network.community_id\"]`, flow_conversation_id=`[\"flow.conversation.id\"]` | sec_threat_name!=``, (network_community_id!=`` or flow_conversation_id!=``) [$__range]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Flow Records",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.9,
+            "drawStyle": "bars",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 16,
+        "x": 8,
+        "y": 0
+      },
+      "id": 3,
+      "interval": "1m",
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "topk(10, count by(sec_threat_name) (count_over_time({service_name=\"elastiflow\"} | json sec_threat_name=`[\"sec.threat.name\"][0]`, network_community_id=`[\"network.community_id\"]` | network_community_id!=``, sec_threat_name!=`` [$__interval])))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Threats (Count)",
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "valueLabel": "sec_threat_name"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 6
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "count(count(count_over_time({service_name=\"elastiflow\"} | json sec_threat_name=`[\"sec.threat.name\"]`, network_community_id=`[\"network.community_id\"]` | sec_threat_name!=`` [$__range])) by (network_community_id))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Sessions",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 6,
+        "x": 0,
+        "y": 12
+      },
+      "id": 4,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Sessions"
+          }
+        ]
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | json sec_threat_name=`[\"sec.threat.name\"][0]`, network_community_id=`[\"network.community_id\"]` | network_community_id!=``, sec_threat_name!=``",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Threats",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "delimiter": ",",
+            "keepTime": false,
+            "replace": true,
+            "source": "labels"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Sessions": {
+                "aggregations": ["distinctCount"],
+                "operation": "aggregate"
+              },
+              "Top IP Reputations": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "network_community_id": {
+                "aggregations": ["distinctCount"],
+                "operation": "aggregate"
+              },
+              "sec_threat_name": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "detected_level": true,
+              "group": true,
+              "network_community_id": false,
+              "partition": true,
+              "service": true,
+              "service_name": true,
+              "topic": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "detected_level": 2,
+              "group": 3,
+              "network_community_id": 1,
+              "partition": 4,
+              "sec_threat_name": 0,
+              "service": 5,
+              "service_name": 6,
+              "topic": 7
+            },
+            "renameByName": {
+              "network_community_id": "Sessions",
+              "network_community_id (distinctCount)": "Sessions",
+              "sec_threat_name": "Top IP Reputations"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 6,
+        "x": 6,
+        "y": 12
+      },
+      "id": 5,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Sessions"
+          }
+        ]
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | json flow_label=`[\"flow.client.as.label\"]`, client_domain=`[\"client.domain\"]`, client_ip=`[\"client.ip\"]`, sec_threat_name=`[\"sec.threat.name\"][0]`, network_community_id=`[\"network.community_id\"]` | flow_label!=\"PRIVATE\", client_domain!=``, client_ip!=``, sec_threat_name!=``, network_community_id!=``",
+          "maxLines": 10000,
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Public Threats",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "delimiter": ",",
+            "keepTime": false,
+            "replace": true,
+            "source": "labels"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Sessions": {
+                "aggregations": ["distinctCount"],
+                "operation": "aggregate"
+              },
+              "Top IP Reputations": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "client_domain": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "client_ip": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "network_community_id": {
+                "aggregations": ["distinctCount"],
+                "operation": "aggregate"
+              },
+              "sec_threat_name": {
+                "aggregations": []
+              }
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "detected_level": true,
+              "group": true,
+              "network_community_id": false,
+              "partition": true,
+              "service": true,
+              "service_name": true,
+              "topic": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "detected_level": 2,
+              "group": 3,
+              "network_community_id": 1,
+              "partition": 4,
+              "sec_threat_name": 0,
+              "service": 5,
+              "service_name": 6,
+              "topic": 7
+            },
+            "renameByName": {
+              "client_domain": "Public Threats",
+              "client_ip": "IP Address",
+              "network_community_id": "Sessions",
+              "network_community_id (distinctCount)": "Sessions",
+              "sec_threat_name": "Top IP Reputations"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 6,
+        "x": 12,
+        "y": 12
+      },
+      "id": 7,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Sessions"
+          }
+        ]
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | json flow_label=`[\"flow.client.as.label\"]`, client_domain=`[\"client.domain\"]`, client_ip=`[\"client.ip\"]`, sec_threat_name=`[\"sec.threat.name\"]`, network_community_id=`[\"network.community_id\"]` | flow_label=\"PRIVATE\", client_domain!=``, client_ip!=``, sec_threat_name!=``, network_community_id!=``",
+          "maxLines": 10000,
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "High-Risk Clients",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "delimiter": ",",
+            "keepTime": false,
+            "replace": true,
+            "source": "labels"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Sessions": {
+                "aggregations": ["distinctCount"],
+                "operation": "aggregate"
+              },
+              "Top IP Reputations": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "client_domain": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "client_ip": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "group": {
+                "aggregations": []
+              },
+              "network_community_id": {
+                "aggregations": ["distinctCount"],
+                "operation": "aggregate"
+              },
+              "sec_threat_name": {
+                "aggregations": []
+              },
+              "server_domain": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "server_ip": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "detected_level": true,
+              "group": true,
+              "network_community_id": false,
+              "partition": true,
+              "service": true,
+              "service_name": true,
+              "topic": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "detected_level": 2,
+              "group": 3,
+              "network_community_id": 1,
+              "partition": 4,
+              "sec_threat_name": 0,
+              "service": 5,
+              "service_name": 6,
+              "topic": 7
+            },
+            "renameByName": {
+              "client_domain": "Client Hostname",
+              "client_ip": "Client IP",
+              "network_community_id": "Sessions",
+              "network_community_id (distinctCount)": "Sessions",
+              "sec_threat_name": "Threats",
+              "server_domain": "Server Hostname",
+              "server_ip": "Server IP"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 6,
+        "x": 18,
+        "y": 12
+      },
+      "id": 6,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Sessions"
+          }
+        ]
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | json flow_label=`[\"flow.server.as.label\"]`, server_domain=`[\"server.domain\"]`, server_ip=`[\"server.ip\"]`, sec_threat_name=`[\"sec.threat.name\"]`, network_community_id=`[\"network.community_id\"]` | flow_label=\"PRIVATE\", server_domain!=``, server_ip!=``, sec_threat_name!=``, network_community_id!=``",
+          "maxLines": 10000,
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "At-Risk Servers",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "delimiter": ",",
+            "keepTime": false,
+            "replace": true,
+            "source": "labels"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Sessions": {
+                "aggregations": ["distinctCount"],
+                "operation": "aggregate"
+              },
+              "Top IP Reputations": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "client_domain": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "client_ip": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "group": {
+                "aggregations": []
+              },
+              "network_community_id": {
+                "aggregations": ["distinctCount"],
+                "operation": "aggregate"
+              },
+              "sec_threat_name": {
+                "aggregations": []
+              },
+              "server_domain": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "server_ip": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "detected_level": true,
+              "group": true,
+              "network_community_id": false,
+              "partition": true,
+              "service": true,
+              "service_name": true,
+              "topic": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "detected_level": 2,
+              "group": 3,
+              "network_community_id": 1,
+              "partition": 4,
+              "sec_threat_name": 0,
+              "service": 5,
+              "service_name": 6,
+              "topic": 7
+            },
+            "renameByName": {
+              "client_domain": "Public Threats",
+              "client_ip": "IP Address",
+              "network_community_id": "Sessions",
+              "network_community_id (distinctCount)": "Sessions",
+              "sec_threat_name": "Threats",
+              "server_domain": "Server Hostname",
+              "server_ip": "Server IP"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": ["ElastiFlow"],
+  "templating": {
+    "list": [
+      {
+        "datasource": {
+          "type": "loki",
+          "uid": "P8E80F9AEF21F6940"
+        },
+        "defaultKeys": [
+          {
+            "text": "Flow Exporter",
+            "value": " host_name\r"
+          },
+          {
+            "text": "Service",
+            "value": " flow_server_l4_port_name\r"
+          },
+          {
+            "text": "Session Established",
+            "value": " l4_session_established"
+          }
+        ],
+        "filters": [],
+        "name": "Filter",
+        "type": "adhoc"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Threats",
+  "uid": "a1fd42bd-4f23-43a9-ad67-7b8f804c5499",
+  "version": 1
+}
