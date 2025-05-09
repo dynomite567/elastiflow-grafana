@@ -1,4 +1,47 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_LOKI",
+      "label": "Loki",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "loki",
+      "pluginName": "Loki"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "12.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "loki",
+      "name": "Loki",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -10,7 +53,7 @@
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
-        "name": "Annotations \u0026 Alerts",
+        "name": "Annotations & Alerts",
         "type": "dashboard"
       }
     ]
@@ -25,7 +68,9 @@
       "icon": "external link",
       "includeVars": true,
       "keepTime": true,
-      "tags": ["ElastiFlow"],
+      "tags": [
+        "ElastiFlow"
+      ],
       "targetBlank": false,
       "title": "ElastiFlow Dashboards",
       "tooltip": "",
@@ -37,7 +82,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -71,7 +116,9 @@
         },
         "pieType": "pie",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -86,7 +133,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
+            "uid": "${DS_LOKI}"
           },
           "direction": "backward",
           "editorMode": "code",
@@ -109,7 +156,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -143,7 +190,9 @@
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
-          "calcs": ["distinctCount"],
+          "calcs": [
+            "distinctCount"
+          ],
           "fields": "",
           "values": false
         },
@@ -159,7 +208,11 @@
           "editorMode": "code",
           "expr": "count by(network_type) (count_over_time({service=\"elastiflow\"} | json | keep network_type | network_type != `` [$__auto]))",
           "queryType": "range",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          }
         }
       ],
       "title": "IP Versions",
@@ -168,7 +221,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -202,7 +255,9 @@
         },
         "pieType": "pie",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -219,7 +274,11 @@
           "editorMode": "code",
           "expr": "sum by(network_transport) (count_over_time({service=\"elastiflow\"} | json | keep network_transport | network_transport != `` [$__auto]))",
           "queryType": "range",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          }
         }
       ],
       "title": "Layer-4 Protocol (flow records)",
@@ -236,7 +295,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -289,7 +348,11 @@
           "editorMode": "code",
           "expr": "count by(network_transport) (count_over_time({service=\"elastiflow\"} | json | keep network_transport | network_transport != `` [$__auto]))",
           "queryType": "range",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          }
         }
       ],
       "title": "Layer-4 Protocols",
@@ -319,7 +382,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -417,12 +480,16 @@
           "editorMode": "code",
           "expr": "sum by(network_type) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [1m])*8/(60000/1000))",
           "queryType": "range",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          }
         },
         {
           "datasource": {
             "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
+            "uid": "${DS_LOKI}"
           },
           "direction": "backward",
           "editorMode": "code",
@@ -453,7 +520,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -551,12 +618,16 @@
           "editorMode": "code",
           "expr": "sum by(network_transport) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [1m])*8/(60000/1000))",
           "queryType": "range",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          }
         },
         {
           "datasource": {
             "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
+            "uid": "${DS_LOKI}"
           },
           "direction": "backward",
           "editorMode": "code",
@@ -587,7 +658,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -685,12 +756,16 @@
           "editorMode": "code",
           "expr": "sum by(network_type) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_packets [1m])/(60000/1000))",
           "queryType": "range",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          }
         },
         {
           "datasource": {
             "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
+            "uid": "${DS_LOKI}"
           },
           "direction": "backward",
           "editorMode": "code",
@@ -721,7 +796,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -819,12 +894,16 @@
           "editorMode": "code",
           "expr": "sum by(network_transport) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_packets [1m])/(60000/1000))",
           "queryType": "range",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          }
         },
         {
           "datasource": {
             "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
+            "uid": "${DS_LOKI}"
           },
           "direction": "backward",
           "editorMode": "code",
@@ -855,7 +934,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -889,7 +968,9 @@
         },
         "pieType": "pie",
         "reduceOptions": {
-          "calcs": ["sum"],
+          "calcs": [
+            "sum"
+          ],
           "fields": "",
           "values": false
         },
@@ -906,7 +987,11 @@
           "editorMode": "code",
           "expr": "sum by(vlan_tag_id) (count_over_time({service=\"elastiflow\"} | json | vlan_tag_id != `` [$__range]))",
           "queryType": "range",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          }
         }
       ],
       "title": "VLANs (flow records)",
@@ -923,7 +1008,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -957,7 +1042,9 @@
         },
         "pieType": "pie",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -974,7 +1061,11 @@
           "editorMode": "code",
           "expr": "sum by(flow_in_ip_dscp_name) (count_over_time({service=\"elastiflow\"} | json | flow_in_ip_dscp_name != `` [$__auto]))",
           "queryType": "range",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          }
         }
       ],
       "title": "DSCP (flow records)",
@@ -991,7 +1082,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1089,12 +1180,16 @@
           "editorMode": "code",
           "expr": "sum by(vlan_tag_id) (sum_over_time({service_name=\"elastiflow\"} | json | vlan_tag_id!=`` | unwrap network_bytes [1m])*8/(60000/1000))",
           "queryType": "range",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          }
         },
         {
           "datasource": {
             "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
+            "uid": "${DS_LOKI}"
           },
           "direction": "backward",
           "editorMode": "code",
@@ -1125,7 +1220,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1223,12 +1318,16 @@
           "editorMode": "code",
           "expr": "sum by(flow_in_ip_dscp_name) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [1m])*8/(60000/1000))",
           "queryType": "range",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          }
         },
         {
           "datasource": {
             "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
+            "uid": "${DS_LOKI}"
           },
           "direction": "backward",
           "editorMode": "code",
@@ -1259,7 +1358,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1357,12 +1456,16 @@
           "editorMode": "code",
           "expr": "sum by(vlan_tag_id) (sum_over_time({service_name=\"elastiflow\"} | json | vlan_tag_id!=`` | unwrap network_packets [1m])/(60000/1000))",
           "queryType": "range",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          }
         },
         {
           "datasource": {
             "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
+            "uid": "${DS_LOKI}"
           },
           "direction": "backward",
           "editorMode": "code",
@@ -1393,7 +1496,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1491,12 +1594,16 @@
           "editorMode": "code",
           "expr": "sum by(flow_in_ip_dscp_name) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_packets [1m])/(60000/1000))",
           "queryType": "range",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          }
         },
         {
           "datasource": {
             "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
+            "uid": "${DS_LOKI}"
           },
           "direction": "backward",
           "editorMode": "code",
@@ -1525,9 +1632,10 @@
       "type": "timeseries"
     }
   ],
-  "preload": false,
   "schemaVersion": 41,
-  "tags": ["ElastiFlow"],
+  "tags": [
+    "ElastiFlow"
+  ],
   "templating": {
     "list": [
       {
@@ -1556,5 +1664,6 @@
   "timezone": "browser",
   "title": "Traffic Details",
   "uid": "cekutlyl68dfka",
-  "version": 1
+  "version": 1,
+  "weekStart": ""
 }

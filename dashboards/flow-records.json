@@ -1,4 +1,47 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_LOKI",
+      "label": "Loki",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "loki",
+      "pluginName": "Loki"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "12.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "loki",
+      "name": "Loki",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -10,7 +53,7 @@
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
-        "name": "Annotations \u0026 Alerts",
+        "name": "Annotations & Alerts",
         "type": "dashboard"
       }
     ]
@@ -25,7 +68,9 @@
       "icon": "external link",
       "includeVars": true,
       "keepTime": true,
-      "tags": ["ElastiFlow"],
+      "tags": [
+        "ElastiFlow"
+      ],
       "targetBlank": false,
       "title": "ElastiFlow Dashboards",
       "tooltip": "",
@@ -37,7 +82,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -84,7 +129,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
+            "uid": "${DS_LOKI}"
           },
           "direction": "backward",
           "editorMode": "code",
@@ -99,7 +144,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -179,7 +224,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
+            "uid": "${DS_LOKI}"
           },
           "direction": "backward",
           "editorMode": "code",
@@ -202,7 +247,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -248,7 +293,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
+            "uid": "${DS_LOKI}"
           },
           "direction": "backward",
           "editorMode": "code",
@@ -264,7 +309,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -327,7 +372,9 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": ["sum"],
+          "reducer": [
+            "sum"
+          ],
           "show": false
         },
         "showHeader": true,
@@ -341,7 +388,11 @@
           "expr": "{service_name=\"elastiflow\"} | json | keep flow_export_version_name, flow_conversation_id, host_name, client_domain, server_domain, flow_server_l4_port_name, network_bytes, network_packets",
           "maxLines": 10000,
           "queryType": "range",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          }
         }
       ],
       "title": "Records",
@@ -385,9 +436,10 @@
       "type": "table"
     }
   ],
-  "preload": false,
   "schemaVersion": 41,
-  "tags": ["ElastiFlow"],
+  "tags": [
+    "ElastiFlow"
+  ],
   "templating": {
     "list": [
       {
@@ -420,5 +472,6 @@
   "timezone": "browser",
   "title": "Flow Records",
   "uid": "ba4aa5d7-ca63-4388-b87b-03ff98b8d65c",
-  "version": 2
+  "version": 2,
+  "weekStart": ""
 }

@@ -1,4 +1,41 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_LOKI",
+      "label": "Loki",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "loki",
+      "pluginName": "Loki"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "12.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "loki",
+      "name": "Loki",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -10,7 +47,7 @@
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
-        "name": "Annotations \u0026 Alerts",
+        "name": "Annotations & Alerts",
         "type": "dashboard"
       }
     ]
@@ -25,7 +62,9 @@
       "icon": "external link",
       "includeVars": true,
       "keepTime": true,
-      "tags": ["ElastiFlow"],
+      "tags": [
+        "ElastiFlow"
+      ],
       "targetBlank": false,
       "title": "ElastiFlow Dashboards",
       "tooltip": "",
@@ -37,7 +76,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -104,7 +143,9 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": ["sum"],
+          "reducer": [
+            "sum"
+          ],
           "show": false
         },
         "showHeader": true
@@ -117,7 +158,11 @@
           "expr": "{service=\"elastiflow\"} | json | keep host_name, flow_export_version_name, network_bytes, network_packets",
           "maxLines": 10000,
           "queryType": "range",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          }
         }
       ],
       "title": "Observed Traffic (records)",
@@ -153,7 +198,9 @@
             "alias": "Records",
             "mode": "reduceRow",
             "reduce": {
-              "include": ["id"],
+              "include": [
+                "id"
+              ],
               "reducer": "sum"
             }
           }
@@ -163,7 +210,9 @@
           "options": {
             "fields": {
               "Records": {
-                "aggregations": ["count"],
+                "aggregations": [
+                  "count"
+                ],
                 "operation": "aggregate"
               },
               "flow_export_version_name": {
@@ -175,14 +224,20 @@
                 "operation": "groupby"
               },
               "id": {
-                "aggregations": ["count"]
+                "aggregations": [
+                  "count"
+                ]
               },
               "network_bytes": {
-                "aggregations": ["sum"],
+                "aggregations": [
+                  "sum"
+                ],
                 "operation": "aggregate"
               },
               "network_packets": {
-                "aggregations": ["sum"],
+                "aggregations": [
+                  "sum"
+                ],
                 "operation": "aggregate"
               }
             }
@@ -215,7 +270,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -294,7 +349,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
+            "uid": "${DS_LOKI}"
           },
           "direction": "backward",
           "editorMode": "code",
@@ -317,7 +372,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -396,7 +451,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
+            "uid": "${DS_LOKI}"
           },
           "direction": "backward",
           "editorMode": "code",
@@ -419,7 +474,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "fieldConfig": {
         "defaults": {
@@ -498,7 +553,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
+            "uid": "${DS_LOKI}"
           },
           "direction": "backward",
           "editorMode": "code",
@@ -519,12 +574,14 @@
       "type": "timeseries"
     }
   ],
-  "preload": false,
   "schemaVersion": 41,
-  "tags": ["ElastiFlow"],
+  "tags": [
+    "ElastiFlow"
+  ],
   "templating": {
     "list": [
       {
+        "baseFilters": [],
         "datasource": {
           "type": "loki",
           "uid": "P8E80F9AEF21F6940"
@@ -553,5 +610,6 @@
   "timezone": "browser",
   "title": "Exporters - Metrics",
   "uid": "247410e8-c930-4784-8332-b42308a7864f",
-  "version": 1
+  "version": 1,
+  "weekStart": ""
 }
