@@ -61,7 +61,7 @@ services:
         apiVersion: 1
         datasources:
         - name: victorialogs
-          type: victorialogs
+          type: victoriametrics-logs-datasource
           access: proxy 
           orgId: 1
           url: http://victorialogs:9428
