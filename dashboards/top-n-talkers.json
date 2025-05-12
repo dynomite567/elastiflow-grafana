@@ -1,4 +1,47 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_VICTORIALOGS",
+      "label": "victorialogs",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "victoriametrics-logs-datasource",
+      "pluginName": "VictoriaLogs"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "12.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "victoriametrics-logs-datasource",
+      "name": "VictoriaLogs",
+      "version": "0.16.3"
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -18,7 +61,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 65,
+  "id": null,
   "links": [
     {
       "asDropdown": true,
@@ -39,7 +82,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "eelgdhpsgrqpse"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -174,7 +217,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | flow.server.l4.port.name:* | stats by (flow.server.l4.port.name) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | last 20 by(throughput) | del network.bytes.total",
@@ -184,7 +227,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | stats sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as Throughput | del network.bytes.total",
@@ -221,7 +264,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "eelgdhpsgrqpse"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -276,7 +319,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | client.domain:* | stats by (client.domain) sum(network.bytes) network.bytes.total | last 10 by(network.bytes.total)",
@@ -305,7 +348,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "eelgdhpsgrqpse"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -360,7 +403,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | server.domain:* | stats by (server.domain) sum(network.bytes) network.bytes.total | last 10 by(network.bytes.total)",
@@ -389,7 +432,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "eelgdhpsgrqpse"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -458,10 +501,10 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | keep client.domain, client.ip, network.bytes, network.packets, network.community_id",
+          "expr": "{service=\"elastiflow\"} | stats by (client.domain) uniq_values(client.ip) client.ip, sum(network.bytes) bytes_total, sum(network.packets) packets_total, count_uniq(network.community_id) sessions | unroll client.ip | keep client.domain, client.ip, bytes_total, packets_total, sessions",
           "maxLines": 1000000,
           "queryType": "instant",
           "refId": "A"
@@ -485,11 +528,11 @@
             "conversions": [
               {
                 "destinationType": "number",
-                "targetField": "network.bytes"
+                "targetField": "bytes_total"
               },
               {
                 "destinationType": "number",
-                "targetField": "network.packets"
+                "targetField": "packets_total"
               }
             ],
             "fields": {}
@@ -499,6 +542,12 @@
           "id": "groupBy",
           "options": {
             "fields": {
+              "bytes_total": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
               "client.domain": {
                 "aggregations": [],
                 "operation": "groupby"
@@ -550,6 +599,18 @@
                   "sum"
                 ],
                 "operation": "aggregate"
+              },
+              "packets_total": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "sessions": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
               }
             }
           }
@@ -569,6 +630,7 @@
               "network.packets (sum)": 3
             },
             "renameByName": {
+              "bytes_total (lastNotNull)": "Bytes",
               "client.domain": "Client Name",
               "client.ip": "Client IP",
               "client_domain": "Client Name",
@@ -579,7 +641,9 @@
               "network_bytes (sum)": "Bytes",
               "network_community_id (count)": "Sessions",
               "network_community_id (distinctCount)": "Sessions",
-              "network_packets (sum)": "Packets"
+              "network_packets (sum)": "Packets",
+              "packets_total (lastNotNull)": "Packets",
+              "sessions (lastNotNull)": "Sessions"
             }
           }
         },
@@ -601,7 +665,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "eelgdhpsgrqpse"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -669,10 +733,10 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | keep server.domain, server.ip, network.bytes, network.packets, network.community_id",
+          "expr": "{service=\"elastiflow\"} | stats by (server.domain) uniq_values(server.ip) server.ip, sum(network.bytes) bytes_total, sum(network.packets) packets_total, count_uniq(network.community_id) sessions | unroll server.ip | keep server.domain, server.ip, bytes_total, packets_total, sessions",
           "maxLines": 1000000,
           "queryType": "instant",
           "refId": "A"
@@ -696,11 +760,11 @@
             "conversions": [
               {
                 "destinationType": "number",
-                "targetField": "network.bytes"
+                "targetField": "bytes_total"
               },
               {
                 "destinationType": "number",
-                "targetField": "network.packets"
+                "targetField": "packets_total"
               }
             ],
             "fields": {}
@@ -710,6 +774,12 @@
           "id": "groupBy",
           "options": {
             "fields": {
+              "bytes_total": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
               "client.domain": {
                 "aggregations": []
               },
@@ -760,6 +830,12 @@
                 ],
                 "operation": "aggregate"
               },
+              "packets_total": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
               "server.domain": {
                 "aggregations": [],
                 "operation": "groupby"
@@ -767,6 +843,12 @@
               "server.ip": {
                 "aggregations": [],
                 "operation": "groupby"
+              },
+              "sessions": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
               }
             }
           }
@@ -786,6 +868,7 @@
               "server.ip": 1
             },
             "renameByName": {
+              "bytes_total (lastNotNull)": "Bytes",
               "client.domain": "Client Name",
               "client.ip": "Client IP",
               "client_domain": "Client Name",
@@ -797,8 +880,10 @@
               "network_community_id (count)": "Sessions",
               "network_community_id (distinctCount)": "Sessions",
               "network_packets (sum)": "Packets",
+              "packets_total (lastNotNull)": "Packets",
               "server.domain": "Server Name",
-              "server.ip": "Server IP"
+              "server.ip": "Server IP",
+              "sessions (lastNotNull)": "Sessions"
             }
           }
         },
@@ -818,7 +903,6 @@
       "type": "table"
     }
   ],
-  "preload": false,
   "schemaVersion": 41,
   "tags": [
     "ElastiFlow"
@@ -829,7 +913,7 @@
         "baseFilters": [],
         "datasource": {
           "type": "victoriametrics-logs-datasource",
-          "uid": "eelgdhpsgrqpse"
+          "uid": "P022A0A8F82CACB18"
         },
         "defaultKeys": [
           {
@@ -867,5 +951,6 @@
   "timezone": "browser",
   "title": "Top-N - Talkers",
   "uid": "fd1ed16e-758b-4a43-b681-796f08a684bb",
-  "version": 7
+  "version": 6,
+  "weekStart": ""
 }

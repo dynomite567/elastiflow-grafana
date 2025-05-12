@@ -1,4 +1,47 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_VICTORIALOGS",
+      "label": "victorialogs",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "victoriametrics-logs-datasource",
+      "pluginName": "VictoriaLogs"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "12.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "victoriametrics-logs-datasource",
+      "name": "VictoriaLogs",
+      "version": "0.16.3"
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -18,7 +61,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 73,
+  "id": null,
   "links": [
     {
       "asDropdown": true,
@@ -39,7 +82,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "eelgdhpsgrqpse"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -90,7 +133,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | network.type:* | stats by (network.type) count()",
@@ -116,7 +159,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "eelgdhpsgrqpse"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -164,7 +207,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | network.type:* | stats count_uniq(network.type)",
@@ -178,7 +221,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "eelgdhpsgrqpse"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -227,7 +270,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | network.transport:* | stats by (network.transport) count()",
@@ -253,7 +296,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "eelgdhpsgrqpse"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -304,7 +347,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | network.transport:* | stats count_uniq(network.transport)",
@@ -339,7 +382,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "eelgdhpsgrqpse"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -435,7 +478,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | network.type:* | stats by (network.type) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | del network.bytes.total",
@@ -445,7 +488,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | stats sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as Throughput | del network.bytes.total",
@@ -472,7 +515,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "eelgdhpsgrqpse"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -568,7 +611,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | network.transport:* | stats by (network.transport) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | del network.bytes.total",
@@ -578,7 +621,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | stats sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as Throughput | del network.bytes.total",
@@ -605,7 +648,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "eelgdhpsgrqpse"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -701,7 +744,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | network.type:* | stats by (network.type) sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as throughput | del network.packets.total",
@@ -711,7 +754,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | stats sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as Throughput | del network.packets.total",
@@ -738,7 +781,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "eelgdhpsgrqpse"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -834,7 +877,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | network.transport:* | stats by (network.transport) sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as throughput | del network.packets.total",
@@ -844,7 +887,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | stats sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as Throughput | del network.packets.total",
@@ -871,7 +914,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "eelgdhpsgrqpse"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -922,7 +965,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | vlan.tag.id:* | stats by (vlan.tag.id) count()",
@@ -948,7 +991,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "eelgdhpsgrqpse"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -999,7 +1042,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | flow.in.ip.dscp.name:* | stats by (flow.in.ip.dscp.name) count()",
@@ -1025,7 +1068,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "eelgdhpsgrqpse"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1121,7 +1164,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | vlan.tag.id:* | stats by (vlan.tag.id) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | del network.bytes.total",
@@ -1131,7 +1174,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | vlan.tag.id:* | stats sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as Throughput | del network.bytes.total",
@@ -1161,7 +1204,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "eelgdhpsgrqpse"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1257,7 +1300,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | flow.in.ip.dscp.name:* | stats by (flow.in.ip.dscp.name) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | del network.bytes.total",
@@ -1267,7 +1310,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | flow.in.ip.dscp.name:* | stats sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as Throughput | del network.bytes.total",
@@ -1294,7 +1337,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "eelgdhpsgrqpse"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1390,7 +1433,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | vlan.tag.id:* | stats by (vlan.tag.id) sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as throughput | del network.packets.total",
@@ -1400,7 +1443,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | vlan.tag.id:* | stats sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as Throughput | del network.packets.total",
@@ -1430,7 +1473,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "eelgdhpsgrqpse"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1526,7 +1569,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | flow.in.ip.dscp.name:* | stats by (flow.in.ip.dscp.name) sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as throughput | del network.packets.total",
@@ -1536,7 +1579,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "eelgdhpsgrqpse"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | flow.in.ip.dscp.name:* | stats sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as Throughput | del network.packets.total",
@@ -1561,7 +1604,6 @@
       "type": "timeseries"
     }
   ],
-  "preload": false,
   "schemaVersion": 41,
   "tags": [
     "ElastiFlow"
@@ -1572,7 +1614,7 @@
         "baseFilters": [],
         "datasource": {
           "type": "victoriametrics-logs-datasource",
-          "uid": "eelgdhpsgrqpse"
+          "uid": "P022A0A8F82CACB18"
         },
         "defaultKeys": [
           {
@@ -1594,5 +1636,6 @@
   "timezone": "browser",
   "title": "Traffic Details",
   "uid": "202e21e8-16f1-431b-8a63-540c95883919",
-  "version": 4
+  "version": 2,
+  "weekStart": ""
 }

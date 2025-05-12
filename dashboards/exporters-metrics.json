@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_VICTORIAMETRICS-LOGS-DATASOURCE",
-      "label": "victoriametrics-logs-datasource",
+      "name": "DS_VICTORIALOGS",
+      "label": "victorialogs",
       "description": "",
       "type": "datasource",
       "pluginId": "victoriametrics-logs-datasource",
@@ -76,7 +76,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -155,10 +155,10 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | keep host.name, flow.export.version.name, network.bytes, network.packets",
+          "expr": "{service=\"elastiflow\"} | stats by (host.name) uniq_values(flow.export.version.name) export_version, sum(network.bytes) bytes_total, sum(network.packets) packets_total, count() | unroll export_version",
           "maxLines": 1000000,
           "queryType": "instant",
           "refId": "A"
@@ -181,17 +181,18 @@
             "conversions": [
               {
                 "destinationType": "number",
-                "targetField": "network.packets"
+                "targetField": "bytes_total"
               },
               {
                 "destinationType": "number",
-                "targetField": "network.bytes"
+                "targetField": "packets_total"
               }
             ],
             "fields": {}
           }
         },
         {
+          "disabled": true,
           "id": "calculateField",
           "options": {
             "alias": "Records",
@@ -213,6 +214,22 @@
                   "count"
                 ],
                 "operation": "aggregate"
+              },
+              "bytes_total": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "count(*)": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "export_version": {
+                "aggregations": [],
+                "operation": "groupby"
               },
               "flow.export.version.name": {
                 "aggregations": [],
@@ -258,6 +275,12 @@
                   "sum"
                 ],
                 "operation": "aggregate"
+              },
+              "packets_total": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
               }
             }
           }
@@ -268,14 +291,17 @@
             "excludeByName": {},
             "includeByName": {},
             "indexByName": {
-              "Records (count)": 2,
-              "flow.export.version.name": 1,
+              "bytes_total (lastNotNull)": 3,
+              "count(*) (lastNotNull)": 2,
+              "export_version": 1,
               "host.name": 0,
-              "network.bytes (sum)": 3,
-              "network.packets (sum)": 4
+              "packets_total (lastNotNull)": 4
             },
             "renameByName": {
               "Records (count)": "Records",
+              "bytes_total (lastNotNull)": "Bytes",
+              "count(*) (lastNotNull)": "Records",
+              "export_version": "Flow Type",
               "flow.export.version.name": "Flow Type",
               "flow_export_version_name": "Flow Type",
               "host.name": "Flow Exporter",
@@ -283,8 +309,21 @@
               "network.bytes (sum)": "Bytes",
               "network.packets (sum)": "Packets",
               "network_bytes (sum)": "Bytes",
-              "network_packets (sum)": "Packets"
+              "network_packets (sum)": "Packets",
+              "packets_total (lastNotNull)": "Packets"
             }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Records"
+              }
+            ]
           }
         }
       ],
@@ -293,7 +332,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -372,7 +411,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | host.name:* | stats by (host.name) count() host_count | math host_count / (60000/1000) | drop host_count",
@@ -387,6 +426,10 @@
           "options": {
             "valueLabel": "host.name"
           }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {}
         }
       ],
       "type": "timeseries"
@@ -394,7 +437,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -473,7 +516,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | host.name:* | stats by (host.name) sum(network.bytes) total_bytes | math total_bytes*8/(60000/1000) | drop total_bytes",
@@ -488,6 +531,10 @@
           "options": {
             "valueLabel": "host.name"
           }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {}
         }
       ],
       "type": "timeseries"
@@ -495,7 +542,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -574,7 +621,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | host.name:* | stats by (host.name) sum(network.packets) total_packets | math total_packets/(60000/1000) | drop total_packets",
@@ -589,6 +636,10 @@
           "options": {
             "valueLabel": "host.name"
           }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {}
         }
       ],
       "type": "timeseries"
@@ -630,6 +681,6 @@
   "timezone": "browser",
   "title": "Exporters - Metrics",
   "uid": "0e890aaa-43ac-45a5-b12b-a75114c746e5",
-  "version": 5,
+  "version": 2,
   "weekStart": ""
 }

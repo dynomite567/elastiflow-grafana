@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_VICTORIAMETRICS-LOGS-DATASOURCE",
-      "label": "victoriametrics-logs-datasource",
+      "name": "DS_VICTORIALOGS",
+      "label": "victorialogs",
       "description": "",
       "type": "datasource",
       "pluginId": "victoriametrics-logs-datasource",
@@ -76,7 +76,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -128,7 +128,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | client.geo.country_name:* | stats by (client.geo.country_name) count() count | last 10 by(count)",
@@ -154,7 +154,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -359,7 +359,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | client.geo.location:* | extract \"<lat>,<long>\" from client.geo.location | keep client.domain, client.ip, network.bytes, network.packets, lat, long",
@@ -370,7 +370,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | server.geo.location:* | extract \"<lat>,<long>\" from server.geo.location | keep server.domain, server.ip, network.bytes, network.packets, lat, long",
@@ -413,7 +413,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -465,7 +465,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | server.geo.country_name:* | stats by (server.geo.country_name) count() count | last 10 by(count)",
@@ -491,7 +491,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -543,7 +543,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | client.geo.city_name:* | stats by (client.geo.city_name) count() count | last 10 by(count)",
@@ -569,7 +569,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -621,7 +621,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | server.geo.city_name:* | stats by (server.geo.city_name) count() count | last 10 by(count)",
@@ -647,7 +647,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -699,7 +699,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | flow.client.geo.tz.name:* | stats by (flow.client.geo.tz.name) count() count | last 10 by(count)",
@@ -725,7 +725,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -777,7 +777,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | flow.server.geo.tz.name:* | stats by (flow.server.geo.tz.name) count() count | last 10 by(count)",
@@ -802,7 +802,9 @@
     }
   ],
   "schemaVersion": 41,
-  "tags": [],
+  "tags": [
+    "ElastiFlow"
+  ],
   "templating": {
     "list": [
       {
@@ -810,12 +812,12 @@
         "baseFilters": [],
         "datasource": {
           "type": "victoriametrics-logs-datasource",
-          "uid": "eelgdhpsgrqpse"
+          "uid": "P022A0A8F82CACB18"
         },
         "defaultKeys": [
           {
             "text": "Flow Exporter",
-            "value": "host_name"
+            "value": " host.name"
           },
           {
             "text": "Client",
@@ -848,6 +850,6 @@
   "timezone": "browser",
   "title": "GeoIP",
   "uid": "2da62db1-52ea-4ae9-af04-4efd0bf165bb",
-  "version": 4,
+  "version": 3,
   "weekStart": ""
 }
