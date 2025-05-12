@@ -985,7 +985,7 @@
         {
           "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by(vlan_tag_id) (count_over_time({service=\"elastiflow\"} | json | vlan_tag_id != `` [$__range]))",
+          "expr": "count by(vlan_tag_id) (count_over_time({service=\"elastiflow\"} | json | vlan_tag_id != `` [$__range]))",
           "queryType": "range",
           "refId": "A",
           "datasource": {
@@ -1664,6 +1664,6 @@
   "timezone": "browser",
   "title": "Traffic Details",
   "uid": "cekutlyl68dfka",
-  "version": 1,
+  "version": 4,
   "weekStart": ""
 }

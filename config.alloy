@@ -19,42 +19,65 @@ loki.process "logprocess" {
 }
 
 loki.relabel "kafka" {
-	forward_to = [loki.write.default.receiver]
+        forward_to = [loki.write.default.receiver]
 
-	rule {
-		source_labels = ["__meta_kafka_topic"]
-		target_label  = "topic"
-	}
+        rule {
+                source_labels = ["__meta_kafka_topic"]
+                target_label  = "topic"
+        }
 
-	rule {
-		source_labels = ["__meta_kafka_partition"]
-		target_label  = "partition"
-	}
+        rule {
+                source_labels = ["__meta_kafka_partition"]
+                target_label  = "partition"
+        }
 
-	rule {
-		source_labels = ["__meta_kafka_group_id"]
-		target_label  = "group"
-	}
+        rule {
+                source_labels = ["__meta_kafka_group_id"]
+                target_label  = "group"
+        }
 }
 
 loki.source.kafka "kafkadata" {
-	brokers  = ["kafka_broker:9092"]
-	topics   = ["elastiflow-flow-codex-1.0"]
-	version  = "2.0.0"
-	labels   = { service = "elastiflow" }
+        brokers  = ["kafka_broker:9092"]
+        topics   = ["elastiflow-flow-codex-1.0"]
+        version  = "2.0.0"
+        labels   = { service = "elastiflow" }
         forward_to    = [loki.process.logprocess.receiver]
-	relabel_rules = loki.relabel.kafka.rules        
+        relabel_rules = loki.relabel.kafka.rules        
+}
+
+prometheus.scrape "loki_metrics" {
+        targets = [{
+                __address__ = "192.168.0.90:3100",
+        }]
+        forward_to      = [prometheus.remote_write.default.receiver]
+        job_name        = "loki-metrics"
+        scrape_interval = "15s"
+}
+
+prometheus.scrape "elastiflow_metrics_1" {
+        targets = [{
+                __address__ = "192.168.0.90:8880",
+        }]
+        forward_to      = [prometheus.remote_write.default.receiver]
+        job_name        = "elastiflow-metrics-1"
+        scrape_interval = "15s"
 }
 
 loki.write "default" {
-	endpoint {
-		url = "http://loki:3100/loki/api/v1/push"
+        endpoint {
+                url = "http://loki:3100/loki/api/v1/push"
 
-		basic_auth {
-			username = "none"
-			password = "none"
-		}
-	}
-	external_labels = {}
+                basic_auth {
+                        username = "none"
+                        password = "none"
+                }
+        }
+        external_labels = {}
 }
 
+prometheus.remote_write "default" {
+        endpoint {
+                url = "http://victoriametrics:8428/prometheus/api/v1/write"
+        }
+}

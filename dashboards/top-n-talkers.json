@@ -285,84 +285,6 @@
         "x": 0,
         "y": 10
       },
-      "id": 4,
-      "interval": "1m",
-      "options": {
-        "displayLabels": [],
-        "legend": {
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true,
-          "values": []
-        },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.0.0",
-      "targets": [
-        {
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "topk(5, sum by(server_domain) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [1m])))",
-          "queryType": "range",
-          "refId": "A",
-          "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          }
-        }
-      ],
-      "title": "Top Servers (bytes)",
-      "transformations": [
-        {
-          "id": "labelsToFields",
-          "options": {
-            "valueLabel": "server_domain"
-          }
-        }
-      ],
-      "type": "piechart"
-    },
-    {
-      "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "semi-dark-blue",
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "mappings": [],
-          "unit": "bytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 12,
-        "y": 10
-      },
       "id": 5,
       "interval": "1m",
       "options": {
@@ -420,6 +342,84 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "fixedColor": "semi-dark-blue",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 10
+      },
+      "id": 4,
+      "interval": "1m",
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "topk(5, sum by(server_domain) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [1m])))",
+          "queryType": "range",
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          }
+        }
+      ],
+      "title": "Top Servers (bytes)",
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "valueLabel": "server_domain"
+          }
+        }
+      ],
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOKI}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
             "mode": "thresholds"
           },
           "custom": {
@@ -458,7 +458,7 @@
         ]
       },
       "gridPos": {
-        "h": 13,
+        "h": 14,
         "w": 12,
         "x": 0,
         "y": 20
@@ -468,6 +468,7 @@
         "cellHeight": "sm",
         "footer": {
           "countRows": false,
+          "enablePagination": true,
           "fields": "",
           "reducer": [
             "sum"
@@ -635,7 +636,7 @@
         ]
       },
       "gridPos": {
-        "h": 13,
+        "h": 14,
         "w": 12,
         "x": 12,
         "y": 20
@@ -645,6 +646,7 @@
         "cellHeight": "sm",
         "footer": {
           "countRows": false,
+          "enablePagination": true,
           "fields": "",
           "reducer": [
             "sum"
@@ -825,6 +827,6 @@
   "timezone": "browser",
   "title": "Top-N - Talkers",
   "uid": "dekqfqw3dnh8gd",
-  "version": 1,
+  "version": 5,
   "weekStart": ""
 }

@@ -128,7 +128,7 @@
         {
           "direction": "backward",
           "editorMode": "code",
-          "expr": "count by(client_geo_country_name) (count_over_time({service_name=\"elastiflow\"} | json | client_geo_country_name != `` [$__interval]))",
+          "expr": "topk(10, count by(client_geo_country_name) (count_over_time({service_name=\"elastiflow\"} | json | client_geo_country_name != `` [$__interval])))",
           "queryType": "range",
           "refId": "A",
           "datasource": {
@@ -362,6 +362,7 @@
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | pattern `<_>client.domain\":\"<client_domain>\"<_>\"client.geo.location\":\"<lat>,<long>\"<_>client.ip\":\"<client_ip>\"<_>network.bytes\":<network_bytes>,<_>network.packets\":<network_packets>,<_>` | keep client_domain, client_ip, network_bytes, network_packets, lat, long | lat!=``, long!=``",
           "hide": false,
+          "maxLines": 10000,
           "queryType": "range",
           "refId": "A"
         },
@@ -374,6 +375,7 @@
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | pattern `<_>network.bytes\":<network_bytes>,<_>network.packets\":<network_packets>,<_>server.domain\":\"<server_domain>\"<_>\"server.geo.location\":\"<lat>,<long>\"<_>server.ip\":\"<server_ip>\"<_>` | keep network_bytes, network_packets, server_domain, server_ip, lat, long | lat!=``, long!=``",
           "hide": false,
+          "maxLines": 10000,
           "queryType": "range",
           "refId": "B"
         }
@@ -463,7 +465,7 @@
         {
           "direction": "backward",
           "editorMode": "code",
-          "expr": "count by(server_geo_country_name) (count_over_time({service_name=\"elastiflow\"} | json | server_geo_country_name != `` [$__interval]))",
+          "expr": "topk(10, count by(server_geo_country_name) (count_over_time({service_name=\"elastiflow\"} | json | server_geo_country_name != `` [$__interval])))",
           "queryType": "range",
           "refId": "A",
           "datasource": {
@@ -538,7 +540,7 @@
         {
           "direction": "backward",
           "editorMode": "code",
-          "expr": "count by(client_geo_city_name) (count_over_time({service_name=\"elastiflow\"} | json | client_geo_city_name != `` [$__interval]))",
+          "expr": "topk(10, count by(client_geo_city_name) (count_over_time({service_name=\"elastiflow\"} | json | client_geo_city_name != `` [$__interval])))",
           "queryType": "range",
           "refId": "A",
           "datasource": {
@@ -613,7 +615,7 @@
         {
           "direction": "backward",
           "editorMode": "code",
-          "expr": "count by(server_geo_city_name) (count_over_time({service_name=\"elastiflow\"} | json | server_geo_city_name != `` [$__interval]))",
+          "expr": "topk(10, count by(server_geo_city_name) (count_over_time({service_name=\"elastiflow\"} | json | server_geo_city_name != `` [$__interval])))",
           "queryType": "range",
           "refId": "A",
           "datasource": {
@@ -688,7 +690,7 @@
         {
           "direction": "backward",
           "editorMode": "code",
-          "expr": "count by(flow_client_geo_tz_name) (count_over_time({service_name=\"elastiflow\"} | json | flow_client_geo_tz_name != `` [$__interval]))",
+          "expr": "topk(10, count by(flow_client_geo_tz_name) (count_over_time({service_name=\"elastiflow\"} | json | flow_client_geo_tz_name != `` [$__interval])))",
           "queryType": "range",
           "refId": "A",
           "datasource": {
@@ -763,7 +765,7 @@
         {
           "direction": "backward",
           "editorMode": "code",
-          "expr": "count by(flow_server_geo_tz_name) (count_over_time({service_name=\"elastiflow\"} | json | flow_server_geo_tz_name != `` [$__interval]))",
+          "expr": "topk(10, count by(flow_server_geo_tz_name) (count_over_time({service_name=\"elastiflow\"} | json | flow_server_geo_tz_name != `` [$__interval])))",
           "queryType": "range",
           "refId": "A",
           "datasource": {
@@ -826,13 +828,13 @@
     ]
   },
   "time": {
-    "from": "now-15m",
-    "to": "now"
+    "from": "2025-05-10T02:56:24.000Z",
+    "to": "2025-05-10T06:00:08.000Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "GeoIP",
   "uid": "4ba8a237-37b5-4c17-a2f5-7a5023935317",
-  "version": 1,
+  "version": 5,
   "weekStart": ""
 }

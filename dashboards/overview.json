@@ -507,7 +507,7 @@
         {
           "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by(sec_threat_name) (count_over_time({service_name=\"elastiflow\"} | json | sec_threat_name != `` [$__range]))",
+          "expr": "sum by(sec_threat_name) (count_over_time({service_name=\"elastiflow\"} | json sec_threat_name=`[\"sec.threat.name\"]` | sec_threat_name != `` [$__range]))",
           "queryType": "range",
           "refId": "A",
           "datasource": {
@@ -522,7 +522,7 @@
           "id": "labelsToFields",
           "options": {
             "mode": "columns",
-            "valueLabel": "tcp_flags_tags"
+            "valueLabel": "sec_threat_name"
           }
         }
       ],
@@ -571,13 +571,13 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Overview",
   "uid": "cekntbcvvw8w0b",
-  "version": 2,
+  "version": 6,
   "weekStart": ""
 }

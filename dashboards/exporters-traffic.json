@@ -446,7 +446,7 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by(observer_ingress_interface_name) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_packets [1m])*8/(60000/1000))",
+          "expr": "sum by(observer_ingress_interface_name) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_packets [1m])/(60000/1000))",
           "queryType": "range",
           "refId": "A"
         },
@@ -457,7 +457,7 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by(network_packets) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_packets [1m])*8/(60000/1000))",
+          "expr": "sum by(network_packets) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_packets [1m])/(60000/1000))",
           "hide": false,
           "queryType": "range",
           "refId": "B"
@@ -584,7 +584,7 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by(observer_egress_interface_name) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_packets [1m])*8/(60000/1000))",
+          "expr": "sum by(observer_egress_interface_name) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_packets [1m])/(60000/1000))",
           "queryType": "range",
           "refId": "A"
         },
@@ -595,7 +595,7 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by(network_packets) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_packets [1m])*8/(60000/1000))",
+          "expr": "sum by(network_packets) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_packets [1m])/(60000/1000))",
           "hide": false,
           "queryType": "range",
           "refId": "B"
@@ -635,6 +635,6 @@
   "timezone": "browser",
   "title": "Exporters - Traffic",
   "uid": "eeky5igpwqku8c",
-  "version": 1,
+  "version": 4,
   "weekStart": ""
 }

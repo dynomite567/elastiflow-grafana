@@ -468,6 +468,7 @@
         "cellHeight": "sm",
         "footer": {
           "countRows": false,
+          "enablePagination": true,
           "fields": "",
           "reducer": [
             "sum"
@@ -664,6 +665,7 @@
         "cellHeight": "sm",
         "footer": {
           "countRows": false,
+          "enablePagination": true,
           "fields": "",
           "reducer": [
             "sum"
@@ -853,6 +855,6 @@
   "timezone": "browser",
   "title": "Top-N - Services",
   "uid": "1be5d311-985f-4cf1-87dc-5f861b53daf0",
-  "version": 1,
+  "version": 4,
   "weekStart": ""
 }

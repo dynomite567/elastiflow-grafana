@@ -468,6 +468,7 @@
         "cellHeight": "sm",
         "footer": {
           "countRows": false,
+          "enablePagination": true,
           "fields": "",
           "reducer": [
             "sum"
@@ -656,6 +657,6 @@
   "timezone": "browser",
   "title": "Top-N - Conversations",
   "uid": "b07a2a9d-2c50-437b-b432-b18ff815d21c",
-  "version": 1,
+  "version": 4,
   "weekStart": ""
 }

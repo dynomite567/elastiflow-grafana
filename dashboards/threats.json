@@ -458,6 +458,7 @@
             },
             "inspect": false
           },
+          "links": [],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -468,7 +469,26 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IP Address"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "NetIntel",
+                    "url": "https://www.elastiflow.com/netintel/search?ip=${__value.text}"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 11,
@@ -955,6 +975,6 @@
   "timezone": "browser",
   "title": "Threats",
   "uid": "a1fd42bd-4f23-43a9-ad67-7b8f804c5499",
-  "version": 1,
+  "version": 5,
   "weekStart": ""
 }

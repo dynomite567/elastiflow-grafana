@@ -5,8 +5,8 @@ server:
   grpc_listen_port: 9096
   log_level: info
   grpc_server_max_concurrent_streams: 1000
-  grpc_server_max_recv_msg_size: 100000000
-  grpc_server_max_send_msg_size: 100000000
+  grpc_server_max_recv_msg_size: 1000000000
+  grpc_server_max_send_msg_size: 1000000000
 
 common:
   instance_addr: 127.0.0.1
@@ -41,7 +41,7 @@ limits_config:
   retention_stream:
     - selector: '{service="elastiflow"}'
       priority: 1
-      period: 24h
+      period: 720h
 
 
 schema_config:
