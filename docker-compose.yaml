@@ -48,6 +48,7 @@ services:
     environment:
       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
       - GF_FEATURE_TOGGLES_ENABLE=alertingSimplifiedRouting,alertingQueryAndExpressionsStepMode
+      - GF_INSTALL_PLUGINS=victoriametrics-logs-datasource
     volumes:
       - 'grafana-data:/var/lib/grafana'
     entrypoint:
@@ -75,13 +76,6 @@ services:
           basicAuth: false
           version: 1
           editable: true
-        EOF
-        cat <<EOF > /etc/grafana/provisioning/plugins/p.yaml
-        apiVersion: 1
-        apps:
-        - type: victoriametrics-logs-datasource
-          org_id: 1
-          disabled: false
         EOF
         /run.sh
     image: grafana/grafana:latest
