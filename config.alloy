@@ -46,15 +46,6 @@ loki.source.kafka "kafkadata" {
         relabel_rules = loki.relabel.kafka.rules        
 }
 
-prometheus.scrape "loki_metrics" {
-        targets = [{
-                __address__ = "192.168.0.90:3100",
-        }]
-        forward_to      = [prometheus.remote_write.default.receiver]
-        job_name        = "loki-metrics"
-        scrape_interval = "15s"
-}
-
 prometheus.scrape "elastiflow_metrics_1" {
         targets = [{
                 __address__ = "192.168.0.90:8880",
@@ -66,7 +57,7 @@ prometheus.scrape "elastiflow_metrics_1" {
 
 loki.write "default" {
         endpoint {
-                url = "http://loki:3100/loki/api/v1/push"
+                url = "http://victorialogs:9428/insert/loki/api/v1/push?_msg_field=timestamp"
 
                 basic_auth {
                         username = "none"

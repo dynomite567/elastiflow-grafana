@@ -1,47 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_LOKI",
-      "label": "Loki",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "loki",
-      "pluginName": "Loki"
-    }
-  ],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "12.0.0"
-    },
-    {
-      "type": "datasource",
-      "id": "loki",
-      "name": "Loki",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "piechart",
-      "name": "Pie chart",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -61,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
+  "id": 73,
   "links": [
     {
       "asDropdown": true,
@@ -81,8 +38,8 @@
   "panels": [
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -132,13 +89,12 @@
       "targets": [
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
           },
-          "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by(network_type) (count_over_time({service=\"elastiflow\"} | json | network_type != `` [$__auto]))",
-          "queryType": "range",
+          "expr": "{service=\"elastiflow\"} | network.type:* | stats by (network.type) count()",
+          "queryType": "stats",
           "refId": "A"
         }
       ],
@@ -147,16 +103,20 @@
         {
           "id": "labelsToFields",
           "options": {
-            "valueLabel": "network_type"
+            "valueLabel": "network.type"
           }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {}
         }
       ],
       "type": "piechart"
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -190,9 +150,7 @@
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
-          "calcs": [
-            "distinctCount"
-          ],
+          "calcs": [],
           "fields": "",
           "values": false
         },
@@ -204,15 +162,14 @@
       "pluginVersion": "12.0.0",
       "targets": [
         {
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "count by(network_type) (count_over_time({service=\"elastiflow\"} | json | keep network_type | network_type != `` [$__auto]))",
-          "queryType": "range",
-          "refId": "A",
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          }
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
+          },
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | network.type:* | stats count_uniq(network.type)",
+          "queryType": "stats",
+          "refId": "A"
         }
       ],
       "title": "IP Versions",
@@ -220,8 +177,8 @@
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -255,9 +212,7 @@
         },
         "pieType": "pie",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": [],
           "fields": "",
           "values": false
         },
@@ -270,15 +225,14 @@
       "pluginVersion": "12.0.0",
       "targets": [
         {
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "sum by(network_transport) (count_over_time({service=\"elastiflow\"} | json | keep network_transport | network_transport != `` [$__auto]))",
-          "queryType": "range",
-          "refId": "A",
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          }
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
+          },
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | network.transport:* | stats by (network.transport) count()",
+          "queryType": "stats",
+          "refId": "A"
         }
       ],
       "title": "Layer-4 Protocol (flow records)",
@@ -286,16 +240,20 @@
         {
           "id": "labelsToFields",
           "options": {
-            "valueLabel": "network_transport"
+            "valueLabel": "network.transport"
           }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {}
         }
       ],
       "type": "piechart"
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -344,15 +302,14 @@
       "pluginVersion": "12.0.0",
       "targets": [
         {
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "count by(network_transport) (count_over_time({service=\"elastiflow\"} | json | keep network_transport | network_transport != `` [$__auto]))",
-          "queryType": "range",
-          "refId": "A",
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          }
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
+          },
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | network.transport:* | stats count_uniq(network.transport)",
+          "queryType": "stats",
+          "refId": "A"
         }
       ],
       "title": "Layer-4 Protocols",
@@ -381,8 +338,8 @@
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -476,26 +433,24 @@
       "pluginVersion": "12.0.0",
       "targets": [
         {
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "sum by(network_type) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [1m])*8/(60000/1000))",
-          "queryType": "range",
-          "refId": "A",
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          }
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
+          },
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | network.type:* | stats by (network.type) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | del network.bytes.total",
+          "queryType": "statsRange",
+          "refId": "A"
         },
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
           },
-          "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by(network_bytes) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [1m])*8/(60000/1000))",
+          "expr": "{service=\"elastiflow\"} | stats sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as Throughput | del network.bytes.total",
           "hide": false,
-          "queryType": "range",
+          "queryType": "statsRange",
           "refId": "B"
         }
       ],
@@ -504,23 +459,20 @@
         {
           "id": "labelsToFields",
           "options": {
-            "valueLabel": "network_type"
+            "valueLabel": "network.type"
           }
         },
         {
           "id": "renameByRegex",
-          "options": {
-            "regex": "Value",
-            "renamePattern": "Throughput"
-          }
+          "options": {}
         }
       ],
       "type": "timeseries"
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -614,26 +566,24 @@
       "pluginVersion": "12.0.0",
       "targets": [
         {
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "sum by(network_transport) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [1m])*8/(60000/1000))",
-          "queryType": "range",
-          "refId": "A",
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          }
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
+          },
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | network.transport:* | stats by (network.transport) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | del network.bytes.total",
+          "queryType": "statsRange",
+          "refId": "A"
         },
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
           },
-          "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by(network_bytes) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [1m])*8/(60000/1000))",
+          "expr": "{service=\"elastiflow\"} | stats sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as Throughput | del network.bytes.total",
           "hide": false,
-          "queryType": "range",
+          "queryType": "statsRange",
           "refId": "B"
         }
       ],
@@ -642,23 +592,20 @@
         {
           "id": "labelsToFields",
           "options": {
-            "valueLabel": "network_transport"
+            "valueLabel": "network.transport"
           }
         },
         {
           "id": "renameByRegex",
-          "options": {
-            "regex": "Value",
-            "renamePattern": "Throughput"
-          }
+          "options": {}
         }
       ],
       "type": "timeseries"
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -752,26 +699,24 @@
       "pluginVersion": "12.0.0",
       "targets": [
         {
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "sum by(network_type) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_packets [1m])/(60000/1000))",
-          "queryType": "range",
-          "refId": "A",
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          }
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
+          },
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | network.type:* | stats by (network.type) sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as throughput | del network.packets.total",
+          "queryType": "statsRange",
+          "refId": "A"
         },
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
           },
-          "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by(network_packets) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_packets [1m])/(60000/1000))",
+          "expr": "{service=\"elastiflow\"} | stats sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as Throughput | del network.packets.total",
           "hide": false,
-          "queryType": "range",
+          "queryType": "statsRange",
           "refId": "B"
         }
       ],
@@ -780,23 +725,20 @@
         {
           "id": "labelsToFields",
           "options": {
-            "valueLabel": "network_type"
+            "valueLabel": "network.type"
           }
         },
         {
           "id": "renameByRegex",
-          "options": {
-            "regex": "Value",
-            "renamePattern": "Throughput"
-          }
+          "options": {}
         }
       ],
       "type": "timeseries"
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -890,26 +832,24 @@
       "pluginVersion": "12.0.0",
       "targets": [
         {
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "sum by(network_transport) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_packets [1m])/(60000/1000))",
-          "queryType": "range",
-          "refId": "A",
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          }
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
+          },
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | network.transport:* | stats by (network.transport) sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as throughput | del network.packets.total",
+          "queryType": "statsRange",
+          "refId": "A"
         },
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
           },
-          "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by(network_packets) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_packets [1m])/(60000/1000))",
+          "expr": "{service=\"elastiflow\"} | stats sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as Throughput | del network.packets.total",
           "hide": false,
-          "queryType": "range",
+          "queryType": "statsRange",
           "refId": "B"
         }
       ],
@@ -918,23 +858,20 @@
         {
           "id": "labelsToFields",
           "options": {
-            "valueLabel": "network_transport"
+            "valueLabel": "network.transport"
           }
         },
         {
           "id": "renameByRegex",
-          "options": {
-            "regex": "Value",
-            "renamePattern": "Throughput"
-          }
+          "options": {}
         }
       ],
       "type": "timeseries"
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -983,15 +920,14 @@
       "pluginVersion": "12.0.0",
       "targets": [
         {
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "count by(vlan_tag_id) (count_over_time({service=\"elastiflow\"} | json | vlan_tag_id != `` [$__range]))",
-          "queryType": "range",
-          "refId": "A",
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          }
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
+          },
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | vlan.tag.id:* | stats by (vlan.tag.id) count()",
+          "queryType": "statsRange",
+          "refId": "A"
         }
       ],
       "title": "VLANs (flow records)",
@@ -1001,14 +937,18 @@
           "options": {
             "valueLabel": "flow_in_ip_dscp_name"
           }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {}
         }
       ],
       "type": "piechart"
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -1057,15 +997,14 @@
       "pluginVersion": "12.0.0",
       "targets": [
         {
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "sum by(flow_in_ip_dscp_name) (count_over_time({service=\"elastiflow\"} | json | flow_in_ip_dscp_name != `` [$__auto]))",
-          "queryType": "range",
-          "refId": "A",
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          }
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
+          },
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | flow.in.ip.dscp.name:* | stats by (flow.in.ip.dscp.name) count()",
+          "queryType": "statsRange",
+          "refId": "A"
         }
       ],
       "title": "DSCP (flow records)",
@@ -1073,16 +1012,20 @@
         {
           "id": "labelsToFields",
           "options": {
-            "valueLabel": "flow_in_ip_dscp_name"
+            "valueLabel": "flow.in.ip.dscp.name"
           }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {}
         }
       ],
       "type": "piechart"
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -1176,26 +1119,24 @@
       "pluginVersion": "12.0.0",
       "targets": [
         {
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "sum by(vlan_tag_id) (sum_over_time({service_name=\"elastiflow\"} | json | vlan_tag_id!=`` | unwrap network_bytes [1m])*8/(60000/1000))",
-          "queryType": "range",
-          "refId": "A",
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          }
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
+          },
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | vlan.tag.id:* | stats by (vlan.tag.id) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | del network.bytes.total",
+          "queryType": "statsRange",
+          "refId": "A"
         },
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
           },
-          "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by(network_bytes) (sum_over_time({service_name=\"elastiflow\"} | json | vlan_tag_id!=`` | unwrap network_bytes [1m])*8/(60000/1000))",
+          "expr": "{service=\"elastiflow\"} | vlan.tag.id:* | stats sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as Throughput | del network.bytes.total",
           "hide": false,
-          "queryType": "range",
+          "queryType": "statsRange",
           "refId": "B"
         }
       ],
@@ -1219,8 +1160,8 @@
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -1314,26 +1255,24 @@
       "pluginVersion": "12.0.0",
       "targets": [
         {
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "sum by(flow_in_ip_dscp_name) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [1m])*8/(60000/1000))",
-          "queryType": "range",
-          "refId": "A",
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          }
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
+          },
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | flow.in.ip.dscp.name:* | stats by (flow.in.ip.dscp.name) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | del network.bytes.total",
+          "queryType": "statsRange",
+          "refId": "A"
         },
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
           },
-          "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by(network_bytes) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [1m])*8/(60000/1000))",
+          "expr": "{service=\"elastiflow\"} | flow.in.ip.dscp.name:* | stats sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as Throughput | del network.bytes.total",
           "hide": false,
-          "queryType": "range",
+          "queryType": "statsRange",
           "refId": "B"
         }
       ],
@@ -1342,23 +1281,20 @@
         {
           "id": "labelsToFields",
           "options": {
-            "valueLabel": "flow_in_ip_dscp_name"
+            "valueLabel": "flow.in.ip.dscp.name"
           }
         },
         {
           "id": "renameByRegex",
-          "options": {
-            "regex": "Value",
-            "renamePattern": "Throughput"
-          }
+          "options": {}
         }
       ],
       "type": "timeseries"
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -1452,26 +1388,24 @@
       "pluginVersion": "12.0.0",
       "targets": [
         {
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "sum by(vlan_tag_id) (sum_over_time({service_name=\"elastiflow\"} | json | vlan_tag_id!=`` | unwrap network_packets [1m])/(60000/1000))",
-          "queryType": "range",
-          "refId": "A",
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          }
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
+          },
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | vlan.tag.id:* | stats by (vlan.tag.id) sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as throughput | del network.packets.total",
+          "queryType": "statsRange",
+          "refId": "A"
         },
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
           },
-          "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by(network_packets) (sum_over_time({service_name=\"elastiflow\"} | json | vlan_tag_id!=`` | unwrap network_packets [1m])/(60000/1000))",
+          "expr": "{service=\"elastiflow\"} | vlan.tag.id:* | stats sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as Throughput | del network.packets.total",
           "hide": false,
-          "queryType": "range",
+          "queryType": "statsRange",
           "refId": "B"
         }
       ],
@@ -1495,8 +1429,8 @@
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -1590,26 +1524,24 @@
       "pluginVersion": "12.0.0",
       "targets": [
         {
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "sum by(flow_in_ip_dscp_name) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_packets [1m])/(60000/1000))",
-          "queryType": "range",
-          "refId": "A",
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          }
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
+          },
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | flow.in.ip.dscp.name:* | stats by (flow.in.ip.dscp.name) sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as throughput | del network.packets.total",
+          "queryType": "statsRange",
+          "refId": "A"
         },
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
           },
-          "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by(network_packets) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_packets [1m])/(60000/1000))",
+          "expr": "{service=\"elastiflow\"} | flow.in.ip.dscp.name:* | stats sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as Throughput | del network.packets.total",
           "hide": false,
-          "queryType": "range",
+          "queryType": "statsRange",
           "refId": "B"
         }
       ],
@@ -1618,20 +1550,18 @@
         {
           "id": "labelsToFields",
           "options": {
-            "valueLabel": "flow_in_ip_dscp_name"
+            "valueLabel": "flow.in.ip.dscp.name"
           }
         },
         {
           "id": "renameByRegex",
-          "options": {
-            "regex": "Value",
-            "renamePattern": "Throughput"
-          }
+          "options": {}
         }
       ],
       "type": "timeseries"
     }
   ],
+  "preload": false,
   "schemaVersion": 41,
   "tags": [
     "ElastiFlow"
@@ -1641,13 +1571,13 @@
       {
         "baseFilters": [],
         "datasource": {
-          "type": "loki",
-          "uid": "P8E80F9AEF21F6940"
+          "type": "victoriametrics-logs-datasource",
+          "uid": "eelgdhpsgrqpse"
         },
         "defaultKeys": [
           {
             "text": "Flow Exporter",
-            "value": " host_name"
+            "value": " host.name"
           }
         ],
         "filters": [],
@@ -1663,7 +1593,6 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "Traffic Details",
-  "uid": "cekutlyl68dfka",
-  "version": 4,
-  "weekStart": ""
+  "uid": "202e21e8-16f1-431b-8a63-540c95883919",
+  "version": 4
 }

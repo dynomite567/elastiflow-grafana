@@ -1,47 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_LOKI",
-      "label": "Loki",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "loki",
-      "pluginName": "Loki"
-    }
-  ],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "12.0.0"
-    },
-    {
-      "type": "datasource",
-      "id": "loki",
-      "name": "Loki",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "piechart",
-      "name": "Pie chart",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -61,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
+  "id": 67,
   "links": [
     {
       "asDropdown": true,
@@ -81,8 +38,8 @@
   "panels": [
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -193,7 +150,7 @@
         "x": 0,
         "y": 0
       },
-      "id": 3,
+      "id": 6,
       "interval": "1m",
       "options": {
         "legend": {
@@ -215,26 +172,24 @@
       "pluginVersion": "12.0.0",
       "targets": [
         {
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "topk(10, sum by(flow_server_l4_port_name) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [1m])*8/(60000/1000)))",
-          "queryType": "range",
-          "refId": "A",
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          }
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
+          },
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | flow.server.l4.port.name:* | stats by (flow.server.l4.port.name) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | last 20 by(throughput) | del network.bytes.total",
+          "queryType": "statsRange",
+          "refId": "A"
         },
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
           },
-          "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by(network_bytes) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [1m])*8/(60000/1000))",
+          "expr": "{service=\"elastiflow\"} | stats sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as Throughput | del network.bytes.total",
           "hide": false,
-          "queryType": "range",
+          "queryType": "statsRange",
           "refId": "B"
         }
       ],
@@ -243,7 +198,10 @@
         {
           "id": "labelsToFields",
           "options": {
-            "valueLabel": "flow_server_l4_port_name"
+            "keepLabels": [
+              "flow.server.l4.port.name"
+            ],
+            "valueLabel": "flow.server.l4.port.name"
           }
         },
         {
@@ -252,14 +210,18 @@
             "regex": "Value",
             "renamePattern": "Throughput"
           }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {}
         }
       ],
       "type": "timeseries"
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -285,7 +247,7 @@
         "x": 0,
         "y": 10
       },
-      "id": 4,
+      "id": 7,
       "interval": "1m",
       "options": {
         "displayLabels": [],
@@ -312,15 +274,14 @@
       "pluginVersion": "12.0.0",
       "targets": [
         {
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "topk(5, sum by(network_transport) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [$__interval])))",
-          "queryType": "range",
-          "refId": "A",
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          }
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
+          },
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | network.transport:* | stats by (network.transport) sum(network.bytes) network.bytes.total | last 10 by(network.bytes.total)",
+          "queryType": "statsRange",
+          "refId": "A"
         }
       ],
       "title": "Top Protocols (bytes)",
@@ -328,16 +289,23 @@
         {
           "id": "labelsToFields",
           "options": {
-            "valueLabel": "network_transport"
+            "keepLabels": [
+              "network.transport"
+            ],
+            "valueLabel": "network.transport"
           }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {}
         }
       ],
       "type": "piechart"
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -363,7 +331,7 @@
         "x": 12,
         "y": 10
       },
-      "id": 5,
+      "id": 8,
       "interval": "1m",
       "options": {
         "displayLabels": [],
@@ -390,15 +358,14 @@
       "pluginVersion": "12.0.0",
       "targets": [
         {
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "topk(10, sum by(flow_server_l4_port_name) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [$__auto])))",
-          "queryType": "range",
-          "refId": "A",
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          }
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
+          },
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | flow.server.l4.port.name:* | stats by (flow.server.l4.port.name) sum(network.bytes) network.bytes.total | last 20 by(network.bytes.total)",
+          "queryType": "stats",
+          "refId": "A"
         }
       ],
       "title": "Top Services (bytes)",
@@ -406,16 +373,20 @@
         {
           "id": "labelsToFields",
           "options": {
-            "valueLabel": "flow_server_l4_port_name"
+            "valueLabel": "flow.server.l4.port.name"
           }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {}
         }
       ],
       "type": "piechart"
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -481,14 +452,13 @@
       "targets": [
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
           },
-          "direction": "backward",
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | json | keep flow_conversation_id, client_domain, client_ip, server_domain, server_ip, flow_server_l4_port_name, network_bytes, network_packets, network_community_id",
-          "maxLines": 10000,
-          "queryType": "range",
+          "expr": "{service=\"elastiflow\"} | keep flow.conversation.id, client.domain, client.ip, server.domain, server.ip, network.bytes, network.packets, network.community_id",
+          "maxLines": 1000000,
+          "queryType": "instant",
           "refId": "A"
         }
       ],
@@ -508,11 +478,11 @@
             "conversions": [
               {
                 "destinationType": "number",
-                "targetField": "network_bytes"
+                "targetField": "network.bytes"
               },
               {
                 "destinationType": "number",
-                "targetField": "network_packets"
+                "targetField": "network.packets"
               }
             ],
             "fields": {}
@@ -522,6 +492,14 @@
           "id": "groupBy",
           "options": {
             "fields": {
+              "client.domain": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "client.ip": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
               "client_domain": {
                 "aggregations": [],
                 "operation": "groupby"
@@ -530,9 +508,31 @@
                 "aggregations": [],
                 "operation": "groupby"
               },
+              "flow.conversation.id": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
               "flow_conversation_id": {
                 "aggregations": [],
                 "operation": "groupby"
+              },
+              "network.bytes": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "network.community_id": {
+                "aggregations": [
+                  "distinctCount"
+                ],
+                "operation": "aggregate"
+              },
+              "network.packets": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
               },
               "network_bytes": {
                 "aggregations": [
@@ -551,6 +551,14 @@
                   "sum"
                 ],
                 "operation": "aggregate"
+              },
+              "server.domain": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "server.ip": {
+                "aggregations": [],
+                "operation": "groupby"
               },
               "server_domain": {
                 "aggregations": [],
@@ -571,23 +579,31 @@
             },
             "includeByName": {},
             "indexByName": {
-              "client_domain": 1,
-              "client_ip": 2,
-              "flow_conversation_id": 0,
-              "network_bytes (sum)": 5,
-              "network_community_id (distinctCount)": 7,
-              "network_packets (sum)": 6,
-              "server_domain": 3,
-              "server_ip": 4
+              "client.domain": 1,
+              "client.ip": 2,
+              "flow.conversation.id": 0,
+              "network.bytes (sum)": 5,
+              "network.community_id (distinctCount)": 7,
+              "network.packets (sum)": 6,
+              "server.domain": 3,
+              "server.ip": 4
             },
             "renameByName": {
+              "client.domain": "Client",
+              "client.ip": "Client IP",
               "client_domain": "Client",
               "client_ip": "Client IP",
+              "flow.conversation.id": "Conversation ID",
               "flow_conversation_id": "Conversation ID",
+              "network.bytes (sum)": "Bytes",
+              "network.community_id (distinctCount)": "Sessions",
+              "network.packets (sum)": "Packets",
               "network_bytes (sum)": "Bytes",
               "network_community_id (count)": "Sessions",
               "network_community_id (distinctCount)": "Sessions",
               "network_packets (sum)": "Packets",
+              "server.domain": "Server",
+              "server.ip": "Server IP",
               "server_domain": "Server",
               "server_ip": "Server IP"
             }
@@ -609,6 +625,7 @@
       "type": "table"
     }
   ],
+  "preload": false,
   "schemaVersion": 41,
   "tags": [
     "ElastiFlow"
@@ -618,29 +635,29 @@
       {
         "baseFilters": [],
         "datasource": {
-          "type": "loki",
-          "uid": "P8E80F9AEF21F6940"
+          "type": "victoriametrics-logs-datasource",
+          "uid": "eelgdhpsgrqpse"
         },
         "defaultKeys": [
           {
             "text": "Flow Exporter",
-            "value": "host_name\r"
+            "value": " host.name\r"
           },
           {
             "text": "Client",
-            "value": " client_domain\r"
+            "value": " client.domain\r"
           },
           {
             "text": "Server",
-            "value": " server_domain\r"
+            "value": " server.domain\r"
           },
           {
             "text": "Service",
-            "value": " flow_server_l4_port_name\r"
+            "value": " flow.server.l4.port.name\r"
           },
           {
             "text": "Traffic Locality",
-            "value": " flow_locality"
+            "value": " flow.locality"
           }
         ],
         "filters": [],
@@ -656,7 +673,6 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "Top-N - Conversations",
-  "uid": "b07a2a9d-2c50-437b-b432-b18ff815d21c",
-  "version": 4,
-  "weekStart": ""
+  "uid": "67e06dc2-4575-4ee3-a3f9-942039e4f64f",
+  "version": 5
 }

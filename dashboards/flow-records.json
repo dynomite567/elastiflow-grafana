@@ -1,12 +1,12 @@
 {
   "__inputs": [
     {
-      "name": "DS_LOKI",
-      "label": "Loki",
+      "name": "DS_VICTORIAMETRICS-LOGS-DATASOURCE",
+      "label": "victoriametrics-logs-datasource",
       "description": "",
       "type": "datasource",
-      "pluginId": "loki",
-      "pluginName": "Loki"
+      "pluginId": "victoriametrics-logs-datasource",
+      "pluginName": "VictoriaLogs"
     }
   ],
   "__elements": {},
@@ -16,12 +16,6 @@
       "id": "grafana",
       "name": "Grafana",
       "version": "12.0.0"
-    },
-    {
-      "type": "datasource",
-      "id": "loki",
-      "name": "Loki",
-      "version": "1.0.0"
     },
     {
       "type": "panel",
@@ -40,6 +34,12 @@
       "id": "timeseries",
       "name": "Time series",
       "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "victoriametrics-logs-datasource",
+      "name": "VictoriaLogs",
+      "version": "0.16.3"
     }
   ],
   "annotations": {
@@ -81,8 +81,8 @@
   "panels": [
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -128,13 +128,12 @@
       "targets": [
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
+            "type": "victoriametrics-logs-datasource",
+            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
           },
-          "direction": "backward",
           "editorMode": "code",
-          "expr": "sum(count_over_time({service_name=\"elastiflow\"} | json | client_ip!=``, server_ip!=`` [$__range]))",
-          "queryType": "range",
+          "expr": "{service=\"elastiflow\"} | client.ip:* server.ip:* | stats count()",
+          "queryType": "stats",
           "refId": "A"
         }
       ],
@@ -143,8 +142,8 @@
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -223,13 +222,12 @@
       "targets": [
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
+            "type": "victoriametrics-logs-datasource",
+            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
           },
-          "direction": "backward",
           "editorMode": "code",
-          "expr": "count by(flow_export_version_name) (count_over_time({service_name=\"elastiflow\"} | json | client_ip!=``, server_ip!=`` [$__interval])) / (60000/1000)",
-          "queryType": "range",
+          "expr": "{service=\"elastiflow\"} | client.ip:* server.ip:* | stats by (flow.export.version.name) count() count | math count / (60000/1000) | del count",
+          "queryType": "statsRange",
           "refId": "A"
         }
       ],
@@ -238,16 +236,20 @@
         {
           "id": "labelsToFields",
           "options": {
-            "valueLabel": "flow_export_version_name"
+            "valueLabel": "flow.export.version.name"
           }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {}
         }
       ],
       "type": "timeseries"
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -292,15 +294,13 @@
       "targets": [
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
+            "type": "victoriametrics-logs-datasource",
+            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
           },
-          "direction": "backward",
           "editorMode": "code",
-          "expr": "count(count(count_over_time({service_name=\"elastiflow\"} | json [$__auto])) by (flow_conversation_id))",
-          "queryType": "instant",
-          "refId": "A",
-          "step": ""
+          "expr": "{service=\"elastiflow\"} | flow.conversation.id:* | stats count_uniq(flow.conversation.id)",
+          "queryType": "stats",
+          "refId": "A"
         }
       ],
       "title": "Conversations",
@@ -308,8 +308,8 @@
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -337,7 +337,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "flow_conversation_id"
+              "options": "Conversation"
             },
             "properties": [
               {
@@ -349,7 +349,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "network_bytes"
+              "options": "Network Bytes"
             },
             "properties": [
               {
@@ -383,16 +383,15 @@
       "pluginVersion": "12.0.0",
       "targets": [
         {
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "{service_name=\"elastiflow\"} | json | keep flow_export_version_name, flow_conversation_id, host_name, client_domain, server_domain, flow_server_l4_port_name, network_bytes, network_packets",
-          "maxLines": 10000,
-          "queryType": "range",
-          "refId": "A",
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          }
+            "type": "victoriametrics-logs-datasource",
+            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+          },
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | keep _time, flow.export.version.name, flow.conversation.id, host.name, client.domain, server.domain, flow.server.l4.port.name, network.bytes, network.packets | sort by (_time desc)",
+          "maxLines": 1000000,
+          "queryType": "instant",
+          "refId": "A"
         }
       ],
       "title": "Records",
@@ -413,21 +412,30 @@
             "includeByName": {},
             "indexByName": {
               "Time": 0,
-              "client_domain": 3,
-              "flow_conversation_id": 1,
-              "flow_server_l4_port_name": 5,
-              "host_name": 2,
-              "network_bytes": 6,
-              "network_packets": 7,
-              "server_domain": 4
+              "client.domain": 3,
+              "flow.conversation.id": 1,
+              "flow.export.version.name": 8,
+              "flow.server.l4.port.name": 5,
+              "host.name": 2,
+              "network.bytes": 6,
+              "network.packets": 7,
+              "server.domain": 4
             },
             "renameByName": {
+              "client.domain": "Client Host Name",
               "client_domain": "Client Host Name",
+              "flow.conversation.id": "Conversation",
+              "flow.export.version.name": "Export Version",
+              "flow.server.l4.port.name": "Port",
               "flow_conversation_id": "Conversation",
               "flow_server_l4_port_name": "Port",
+              "host.name": "Host Name",
               "host_name": "Host Name",
+              "network.bytes": "Network Bytes",
+              "network.packets": "Network Packets",
               "network_bytes": "Network Bytes",
               "network_packets": "Network Packets",
+              "server.domain": "Server Host Name",
               "server_domain": "Server Host Name"
             }
           }
@@ -451,11 +459,11 @@
         "defaultKeys": [
           {
             "text": "Flow Exporter",
-            "value": " host_name\r"
+            "value": " host.name\r"
           },
           {
             "text": "Flow Type",
-            "value": " flow_export_version_name"
+            "value": " flow.export.version.name"
           }
         ],
         "filters": [],
@@ -471,7 +479,7 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "Flow Records",
-  "uid": "ba4aa5d7-ca63-4388-b87b-03ff98b8d65c",
-  "version": 4,
+  "uid": "5c0a1a94-75b5-452f-9f82-1e71af270e10",
+  "version": 3,
   "weekStart": ""
 }

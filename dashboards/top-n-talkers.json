@@ -1,47 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_LOKI",
-      "label": "Loki",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "loki",
-      "pluginName": "Loki"
-    }
-  ],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "12.0.0"
-    },
-    {
-      "type": "datasource",
-      "id": "loki",
-      "name": "Loki",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "piechart",
-      "name": "Pie chart",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -61,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
+  "id": 65,
   "links": [
     {
       "asDropdown": true,
@@ -81,8 +38,8 @@
   "panels": [
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -215,26 +172,24 @@
       "pluginVersion": "12.0.0",
       "targets": [
         {
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "topk(10, sum by(flow_server_l4_port_name) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [$__interval])*8/(60000/1000)))",
-          "queryType": "range",
-          "refId": "A",
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          }
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
+          },
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | flow.server.l4.port.name:* | stats by (flow.server.l4.port.name) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | last 20 by(throughput) | del network.bytes.total",
+          "queryType": "statsRange",
+          "refId": "A"
         },
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
           },
-          "direction": "backward",
           "editorMode": "code",
-          "expr": "sum by(network_bytes) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [$__interval])*8/(60000/1000))",
+          "expr": "{service=\"elastiflow\"} | stats sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as Throughput | del network.bytes.total",
           "hide": false,
-          "queryType": "range",
+          "queryType": "statsRange",
           "refId": "B"
         }
       ],
@@ -243,7 +198,10 @@
         {
           "id": "labelsToFields",
           "options": {
-            "valueLabel": "flow_server_l4_port_name"
+            "keepLabels": [
+              "flow.server.l4.port.name"
+            ],
+            "valueLabel": "flow.server.l4.port.name"
           }
         },
         {
@@ -252,14 +210,18 @@
             "regex": "Value",
             "renamePattern": "Throughput"
           }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {}
         }
       ],
       "type": "timeseries"
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -312,15 +274,14 @@
       "pluginVersion": "12.0.0",
       "targets": [
         {
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "topk(5, sum by(client_domain) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [$__auto])))",
-          "queryType": "range",
-          "refId": "A",
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          }
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
+          },
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | client.domain:* | stats by (client.domain) sum(network.bytes) network.bytes.total | last 10 by(network.bytes.total)",
+          "queryType": "stats",
+          "refId": "A"
         }
       ],
       "title": "Top Clients (bytes)",
@@ -328,16 +289,23 @@
         {
           "id": "labelsToFields",
           "options": {
-            "valueLabel": "client_domain"
+            "keepLabels": [
+              "client.domain"
+            ],
+            "valueLabel": "client.domain"
           }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {}
         }
       ],
       "type": "piechart"
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -390,15 +358,14 @@
       "pluginVersion": "12.0.0",
       "targets": [
         {
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "topk(5, sum by(server_domain) (sum_over_time({service_name=\"elastiflow\"} | json | unwrap network_bytes [1m])))",
-          "queryType": "range",
-          "refId": "A",
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          }
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
+          },
+          "editorMode": "code",
+          "expr": "{service=\"elastiflow\"} | server.domain:* | stats by (server.domain) sum(network.bytes) network.bytes.total | last 10 by(network.bytes.total)",
+          "queryType": "stats",
+          "refId": "A"
         }
       ],
       "title": "Top Servers (bytes)",
@@ -406,16 +373,23 @@
         {
           "id": "labelsToFields",
           "options": {
-            "valueLabel": "server_domain"
+            "keepLabels": [
+              "server.domain"
+            ],
+            "valueLabel": "server.domain"
           }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {}
         }
       ],
       "type": "piechart"
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -428,6 +402,7 @@
               "type": "auto",
               "wrapText": false
             },
+            "filterable": false,
             "inspect": false
           },
           "fieldMinMax": false,
@@ -464,6 +439,7 @@
         "y": 20
       },
       "id": 1,
+      "maxDataPoints": 199,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -481,14 +457,13 @@
       "targets": [
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
           },
-          "direction": "backward",
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | json | keep client_domain, client_ip, network_bytes, network_packets, network_community_id",
-          "maxLines": 10000,
-          "queryType": "range",
+          "expr": "{service=\"elastiflow\"} | keep client.domain, client.ip, network.bytes, network.packets, network.community_id",
+          "maxLines": 1000000,
+          "queryType": "instant",
           "refId": "A"
         }
       ],
@@ -499,6 +474,8 @@
           "options": {
             "delimiter": "|",
             "format": "auto",
+            "keepTime": false,
+            "replace": false,
             "source": "labels"
           }
         },
@@ -508,11 +485,11 @@
             "conversions": [
               {
                 "destinationType": "number",
-                "targetField": "network_bytes"
+                "targetField": "network.bytes"
               },
               {
                 "destinationType": "number",
-                "targetField": "network_packets"
+                "targetField": "network.packets"
               }
             ],
             "fields": {}
@@ -522,6 +499,14 @@
           "id": "groupBy",
           "options": {
             "fields": {
+              "client.domain": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "client.ip": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
               "client_domain": {
                 "aggregations": [],
                 "operation": "groupby"
@@ -529,6 +514,24 @@
               "client_ip": {
                 "aggregations": [],
                 "operation": "groupby"
+              },
+              "network.bytes": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "network.community_id": {
+                "aggregations": [
+                  "distinctCount"
+                ],
+                "operation": "aggregate"
+              },
+              "network.packets": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
               },
               "network_bytes": {
                 "aggregations": [
@@ -559,15 +562,20 @@
             },
             "includeByName": {},
             "indexByName": {
-              "client_domain": 0,
-              "client_ip": 1,
-              "network_bytes (sum)": 2,
-              "network_community_id (count)": 4,
-              "network_packets (sum)": 3
+              "client.domain": 0,
+              "client.ip": 1,
+              "network.bytes (sum)": 2,
+              "network.community_id (distinctCount)": 4,
+              "network.packets (sum)": 3
             },
             "renameByName": {
+              "client.domain": "Client Name",
+              "client.ip": "Client IP",
               "client_domain": "Client Name",
               "client_ip": "Client IP",
+              "network.bytes (sum)": "Bytes",
+              "network.community_id (distinctCount)": "Sessions",
+              "network.packets (sum)": "Packets",
               "network_bytes (sum)": "Bytes",
               "network_community_id (count)": "Sessions",
               "network_community_id (distinctCount)": "Sessions",
@@ -592,8 +600,8 @@
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "${DS_LOKI}"
+        "type": "victoriametrics-logs-datasource",
+        "uid": "eelgdhpsgrqpse"
       },
       "fieldConfig": {
         "defaults": {
@@ -641,7 +649,8 @@
         "x": 12,
         "y": 20
       },
-      "id": 2,
+      "id": 6,
+      "maxDataPoints": 199,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -659,14 +668,13 @@
       "targets": [
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
+            "type": "victoriametrics-logs-datasource",
+            "uid": "eelgdhpsgrqpse"
           },
-          "direction": "backward",
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | json | keep server_domain, server_ip, network_bytes, network_packets, network_community_id",
-          "maxLines": 10000,
-          "queryType": "range",
+          "expr": "{service=\"elastiflow\"} | keep server.domain, server.ip, network.bytes, network.packets, network.community_id",
+          "maxLines": 1000000,
+          "queryType": "instant",
           "refId": "A"
         }
       ],
@@ -677,6 +685,8 @@
           "options": {
             "delimiter": "|",
             "format": "auto",
+            "keepTime": false,
+            "replace": false,
             "source": "labels"
           }
         },
@@ -686,11 +696,11 @@
             "conversions": [
               {
                 "destinationType": "number",
-                "targetField": "network_bytes"
+                "targetField": "network.bytes"
               },
               {
                 "destinationType": "number",
-                "targetField": "network_packets"
+                "targetField": "network.packets"
               }
             ],
             "fields": {}
@@ -700,6 +710,12 @@
           "id": "groupBy",
           "options": {
             "fields": {
+              "client.domain": {
+                "aggregations": []
+              },
+              "client.ip": {
+                "aggregations": []
+              },
               "client_domain": {
                 "aggregations": [],
                 "operation": "groupby"
@@ -707,6 +723,24 @@
               "client_ip": {
                 "aggregations": [],
                 "operation": "groupby"
+              },
+              "network.bytes": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "network.community_id": {
+                "aggregations": [
+                  "distinctCount"
+                ],
+                "operation": "aggregate"
+              },
+              "network.packets": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
               },
               "network_bytes": {
                 "aggregations": [
@@ -726,11 +760,11 @@
                 ],
                 "operation": "aggregate"
               },
-              "server_domain": {
+              "server.domain": {
                 "aggregations": [],
                 "operation": "groupby"
               },
-              "server_ip": {
+              "server.ip": {
                 "aggregations": [],
                 "operation": "groupby"
               }
@@ -745,21 +779,26 @@
             },
             "includeByName": {},
             "indexByName": {
-              "network_bytes (sum)": 2,
-              "network_community_id (count)": 4,
-              "network_packets (sum)": 3,
-              "server_domain": 0,
-              "server_ip": 1
+              "network.bytes (sum)": 2,
+              "network.community_id (distinctCount)": 4,
+              "network.packets (sum)": 3,
+              "server.domain": 0,
+              "server.ip": 1
             },
             "renameByName": {
-              "client_domain": "Top Clients",
+              "client.domain": "Client Name",
+              "client.ip": "Client IP",
+              "client_domain": "Client Name",
               "client_ip": "Client IP",
+              "network.bytes (sum)": "Bytes",
+              "network.community_id (distinctCount)": "Sessions",
+              "network.packets (sum)": "Packets",
               "network_bytes (sum)": "Bytes",
               "network_community_id (count)": "Sessions",
               "network_community_id (distinctCount)": "Sessions",
               "network_packets (sum)": "Packets",
-              "server_domain": "Server Name",
-              "server_ip": "Server IP"
+              "server.domain": "Server Name",
+              "server.ip": "Server IP"
             }
           }
         },
@@ -779,6 +818,7 @@
       "type": "table"
     }
   ],
+  "preload": false,
   "schemaVersion": 41,
   "tags": [
     "ElastiFlow"
@@ -788,29 +828,29 @@
       {
         "baseFilters": [],
         "datasource": {
-          "type": "loki",
-          "uid": "P8E80F9AEF21F6940"
+          "type": "victoriametrics-logs-datasource",
+          "uid": "eelgdhpsgrqpse"
         },
         "defaultKeys": [
           {
             "text": "Flow Exporter",
-            "value": "host_name\r"
+            "value": " host.name\r"
           },
           {
             "text": "Client",
-            "value": " client_domain\r"
+            "value": " client.domain\r"
           },
           {
             "text": "Server",
-            "value": " server_domain\r"
+            "value": " server.domain\r"
           },
           {
             "text": "Service",
-            "value": " flow_server_l4_port_name\r"
+            "value": " flow.server.l4.port.name\r"
           },
           {
             "text": "Traffic Locality",
-            "value": " flow_locality"
+            "value": " flow.locality"
           }
         ],
         "filters": [],
@@ -826,7 +866,6 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "Top-N - Talkers",
-  "uid": "dekqfqw3dnh8gd",
-  "version": 5,
-  "weekStart": ""
+  "uid": "fd1ed16e-758b-4a43-b681-796f08a684bb",
+  "version": 7
 }
