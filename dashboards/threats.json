@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_VICTORIAMETRICS-LOGS-DATASOURCE",
-      "label": "victoriametrics-logs-datasource",
+      "name": "DS_VICTORIALOGS",
+      "label": "victorialogs",
       "description": "",
       "type": "datasource",
       "pluginId": "victoriametrics-logs-datasource",
@@ -82,7 +82,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -128,7 +128,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | sec.threat.name:* (-network.community_id:=`` OR -flow.conversation.id:=``) | stats count(sec.threat.name)",
@@ -142,7 +142,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -220,7 +220,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | network.community_id:* sec.threat.name: * | unroll sec.threat.name | stats by (sec.threat.name) count_uniq(network.community_id) threatcount | last 25 by(threatcount)",
@@ -246,7 +246,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -292,7 +292,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | sec.threat.name:* | stats count_uniq(network.community_id)",
@@ -306,7 +306,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -362,7 +362,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | sec.threat.name:* network.community_id:* | keep sec.threat.name, network.community_id | unroll sec.threat.name",
@@ -455,7 +455,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -526,7 +526,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | -flow.client.as.label:=\"PRIVATE\" client.domain:* client.ip:* sec.threat.name:* network.community_id:* | keep client.domain, client.ip, network.community_id",
@@ -647,7 +647,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -698,7 +698,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | flow.client.as.label:=\"PRIVATE\" client.domain:* client.ip:* sec.threat.name:* network.community_id:* | keep client.domain, client.ip, network.community_id",
@@ -831,7 +831,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -882,7 +882,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | flow.server.as.label:=\"PRIVATE\" server.domain:* server.ip:* sec.threat.name:* network.community_id:* | keep server.domain, server.ip, network.community_id",
@@ -1053,6 +1053,6 @@
   "timezone": "browser",
   "title": "Threats",
   "uid": "3c4a8e1b-98e2-4ace-81f6-639e26cc6217",
-  "version": 5,
+  "version": 1,
   "weekStart": ""
 }

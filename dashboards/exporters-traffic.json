@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_VICTORIAMETRICS-LOGS-DATASOURCE",
-      "label": "victoriametrics-logs-datasource",
+      "name": "DS_VICTORIALOGS",
+      "label": "victorialogs",
       "description": "",
       "type": "datasource",
       "pluginId": "victoriametrics-logs-datasource",
@@ -70,7 +70,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -166,7 +166,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | stats by (observer.ingress.interface.name) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | -observer.ingress.interface.name:=`` | del network.bytes.total",
@@ -176,7 +176,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | stats sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as Throughput | del network.bytes.total",
@@ -203,7 +203,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -299,7 +299,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | stats by (observer.egress.interface.name) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | -observer.egress.interface.name:=`` | del network.bytes.total",
@@ -309,7 +309,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | stats sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as Throughput | del network.bytes.total",
@@ -336,7 +336,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -432,7 +432,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | stats by (observer.ingress.interface.name) sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as throughput | -observer.ingress.interface.name:=`` | del network.packets.total",
@@ -442,7 +442,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | stats sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as Throughput | del network.packets.total",
@@ -469,7 +469,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+        "uid": "${DS_VICTORIALOGS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -565,7 +565,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | stats by (observer.egress.interface.name) sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as throughput | -observer.egress.interface.name:=`` | del network.packets.total",
@@ -575,7 +575,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "${DS_VICTORIAMETRICS-LOGS-DATASOURCE}"
+            "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
           "expr": "{service=\"elastiflow\"} | stats sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as Throughput | del network.packets.total",
@@ -615,6 +615,6 @@
   "timezone": "browser",
   "title": "Exporters - Traffic",
   "uid": "c25d39ee-f18f-4d6a-8c7f-d5df1bef2caf",
-  "version": 3,
+  "version": 1,
   "weekStart": ""
 }

@@ -320,7 +320,7 @@
             "fields": {},
             "sort": [
               {
-                "desc": true,
+                "desc": false,
                 "field": "Records"
               }
             ]
@@ -681,6 +681,6 @@
   "timezone": "browser",
   "title": "Exporters - Metrics",
   "uid": "0e890aaa-43ac-45a5-b12b-a75114c746e5",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }
