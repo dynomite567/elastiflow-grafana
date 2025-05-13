@@ -18,7 +18,7 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka_broker:9092,PLAINTEXT_INTERNAL://kafka_broker:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://${HOST_IP}:9092,PLAINTEXT_INTERNAL://kafka_broker:29092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
@@ -32,19 +32,19 @@ services:
 
   victorialogs:
     restart: unless-stopped
-    image: docker.io/victoriametrics/victoria-logs:v1.22.2-victorialogs
+    image: docker.io/victoriametrics/victoria-logs:${VMLOG_VERSION}
     stdin_open: true
     tty: true
-    ports:
-      - 9428:9428
     volumes:
       - victorialogs-data:/victorialogs-data
-    command: -storageDataPath=victorialogs-data -retentionPeriod=90d
+    command: -storageDataPath=victorialogs-data -retentionPeriod=${LOG_RETENTION}
     networks:
       - elastiflow-grafana
 
   grafana:    
     restart: unless-stopped
+    ports:
+      - "3000:3000"
     environment:
       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
       - GF_FEATURE_TOGGLES_ENABLE=alertingSimplifiedRouting,alertingQueryAndExpressionsStepMode
@@ -71,8 +71,6 @@ services:
         EOF
         /run.sh
     image: grafana/grafana:latest
-    ports:
-      - "3000:3000"
     networks:
       - elastiflow-grafana
   
