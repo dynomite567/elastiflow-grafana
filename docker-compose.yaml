@@ -18,7 +18,7 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://192.168.0.90:9092,PLAINTEXT_INTERNAL://kafka_broker:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka_broker:9092,PLAINTEXT_INTERNAL://kafka_broker:29092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
@@ -56,7 +56,6 @@ services:
       - -euc
       - |
         mkdir -p /etc/grafana/provisioning/datasources
-        mkdir -p /etc/grafana/provisioning/plugins
         cat <<EOF > /etc/grafana/provisioning/datasources/ds.yaml
         apiVersion: 1
         datasources:
@@ -67,13 +66,6 @@ services:
           url: http://victorialogs:9428
           basicAuth: false
           isDefault: true
-          version: 1
-          editable: true
-        - name: victoriametrics-prom
-          type: prometheus
-          orgId: 1
-          url: http://victoriametrics:8428
-          basicAuth: false
           version: 1
           editable: true
         EOF
@@ -98,22 +90,9 @@ services:
     networks:
       - elastiflow-grafana
 
-  victoriametrics:
-    stdin_open: true
-    tty: true
-    volumes:
-      - victoria-data:/victoria-metrics-data
-    ports:
-      - 8428:8428
-    image: victoriametrics/victoria-metrics:v1.116.0
-    command: --selfScrapeInterval=5s -storageDataPath=victoria-metrics-data
-    networks:
-      - elastiflow-grafana
-
 networks:
   elastiflow-grafana:
 
 volumes:
   grafana-data:
   victorialogs-data:
-  victoria-data:
