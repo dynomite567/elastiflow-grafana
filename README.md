@@ -1,6 +1,6 @@
 # Elastiflow Grafana (KVLAG) Stack
 
-A log stack to visulaize NetFlows that are processed and collected by Elastiflow in Grafana. Uses Kafka as a data ingester and VictoriaLogs as a log storage backend.
+A log stack to visulaize NetFlows that are processed and collected by Elastiflow in Grafana. Uses Kafka as a data ingester, Grafana Alloy as a scraper, and VictoriaLogs as a log storage backend.
 
 ## Prerequisites
 
