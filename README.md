@@ -14,6 +14,7 @@ EF_OUTPUT_KAFKA_TIMESTAMP_SOURCE: start # Uses start of flow as timestamp
 EF_OUTPUT_KAFKA_BROKERS: <YOUR_KAFKA_BROKER_HOST>:9092 # Set to where you are hosting Kafka
 EF_OUTPUT_KAFKA_VERSION: 4.0.0 # Kafka version
 EF_OUTPUT_KAFKA_TOPIC: elastiflow-flow-codex # Topic name to send data to
+EF_OUTPUT_KAFKA_PRODUCER_COMPRESSION: 0 # Disables compresssion (required in order to clear data from Kafka)
 ```
 
 Docker and Docker Compose is also required.
