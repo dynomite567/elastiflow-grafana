@@ -64,6 +64,12 @@ If you are using docker-compose V1 or Podman, use this command instead:
 ```
 docker-compose pull && docker-compose up -d
 ```
+## Screenshots
+![](https://github.com/dynomite567/elastiflow-grafana/blob/assets/screenshot1.png)
+
+![](https://github.com/dynomite567/elastiflow-grafana/blob/assets/screenshot2.png)
+
+![](https://github.com/dynomite567/elastiflow-grafana/blob/assets/screenshot3.png)
 
 ## Motivation
 I recently started using ElastiFlow on my home network using an ELK stack as a backend. It ran well and data visualizations were super responsive but the stack was using a lot of system resources, even while idling. I also enjoy using Grafana for metric and log visualization and I wanted an alternative way to use ElastiFlow without having to have a resource heavy backend.
