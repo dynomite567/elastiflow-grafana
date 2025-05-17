@@ -136,7 +136,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | network.type:* | stats by (network.type) count()",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | network.type:* | stats by (network.type) count()",
           "queryType": "stats",
           "refId": "A"
         }
@@ -210,7 +210,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | network.type:* | stats count_uniq(network.type)",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | network.type:* | stats count_uniq(network.type)",
           "queryType": "stats",
           "refId": "A"
         }
@@ -273,7 +273,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | network.transport:* | stats by (network.transport) count()",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | network.transport:* | stats by (network.transport) count()",
           "queryType": "stats",
           "refId": "A"
         }
@@ -350,7 +350,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | network.transport:* | stats count_uniq(network.transport)",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | network.transport:* | stats count_uniq(network.transport)",
           "queryType": "stats",
           "refId": "A"
         }
@@ -481,7 +481,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | network.type:* | stats by (network.type) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | del network.bytes.total",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | network.type:* | stats by (network.type) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | del network.bytes.total",
           "queryType": "statsRange",
           "refId": "A"
         },
@@ -491,7 +491,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | stats sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as Throughput | del network.bytes.total",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | stats sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as Throughput | del network.bytes.total",
           "hide": false,
           "queryType": "statsRange",
           "refId": "B"
@@ -614,7 +614,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | network.transport:* | stats by (network.transport) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | del network.bytes.total",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | network.transport:* | stats by (network.transport) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | del network.bytes.total",
           "queryType": "statsRange",
           "refId": "A"
         },
@@ -624,7 +624,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | stats sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as Throughput | del network.bytes.total",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | stats sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as Throughput | del network.bytes.total",
           "hide": false,
           "queryType": "statsRange",
           "refId": "B"
@@ -747,7 +747,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | network.type:* | stats by (network.type) sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as throughput | del network.packets.total",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | network.type:* | stats by (network.type) sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as throughput | del network.packets.total",
           "queryType": "statsRange",
           "refId": "A"
         },
@@ -757,7 +757,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | stats sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as Throughput | del network.packets.total",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | stats sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as Throughput | del network.packets.total",
           "hide": false,
           "queryType": "statsRange",
           "refId": "B"
@@ -880,7 +880,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | network.transport:* | stats by (network.transport) sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as throughput | del network.packets.total",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | network.transport:* | stats by (network.transport) sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as throughput | del network.packets.total",
           "queryType": "statsRange",
           "refId": "A"
         },
@@ -890,7 +890,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | stats sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as Throughput | del network.packets.total",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | stats sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as Throughput | del network.packets.total",
           "hide": false,
           "queryType": "statsRange",
           "refId": "B"
@@ -968,7 +968,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | vlan.tag.id:* | stats by (vlan.tag.id) count()",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | vlan.tag.id:* | stats by (vlan.tag.id) count()",
           "queryType": "statsRange",
           "refId": "A"
         }
@@ -1045,7 +1045,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | flow.in.ip.dscp.name:* | stats by (flow.in.ip.dscp.name) count()",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | flow.in.ip.dscp.name:* | stats by (flow.in.ip.dscp.name) count()",
           "queryType": "statsRange",
           "refId": "A"
         }
@@ -1167,7 +1167,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | vlan.tag.id:* | stats by (vlan.tag.id) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | del network.bytes.total",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | vlan.tag.id:* | stats by (vlan.tag.id) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | del network.bytes.total",
           "queryType": "statsRange",
           "refId": "A"
         },
@@ -1177,7 +1177,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | vlan.tag.id:* | stats sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as Throughput | del network.bytes.total",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | vlan.tag.id:* | stats sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as Throughput | del network.bytes.total",
           "hide": false,
           "queryType": "statsRange",
           "refId": "B"
@@ -1303,7 +1303,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | flow.in.ip.dscp.name:* | stats by (flow.in.ip.dscp.name) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | del network.bytes.total",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | flow.in.ip.dscp.name:* | stats by (flow.in.ip.dscp.name) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | del network.bytes.total",
           "queryType": "statsRange",
           "refId": "A"
         },
@@ -1313,7 +1313,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | flow.in.ip.dscp.name:* | stats sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as Throughput | del network.bytes.total",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | flow.in.ip.dscp.name:* | stats sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as Throughput | del network.bytes.total",
           "hide": false,
           "queryType": "statsRange",
           "refId": "B"
@@ -1436,7 +1436,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | vlan.tag.id:* | stats by (vlan.tag.id) sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as throughput | del network.packets.total",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | vlan.tag.id:* | stats by (vlan.tag.id) sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as throughput | del network.packets.total",
           "queryType": "statsRange",
           "refId": "A"
         },
@@ -1446,7 +1446,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | vlan.tag.id:* | stats sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as Throughput | del network.packets.total",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | vlan.tag.id:* | stats sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as Throughput | del network.packets.total",
           "hide": false,
           "queryType": "statsRange",
           "refId": "B"
@@ -1572,7 +1572,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | flow.in.ip.dscp.name:* | stats by (flow.in.ip.dscp.name) sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as throughput | del network.packets.total",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | flow.in.ip.dscp.name:* | stats by (flow.in.ip.dscp.name) sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as throughput | del network.packets.total",
           "queryType": "statsRange",
           "refId": "A"
         },
@@ -1582,7 +1582,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | flow.in.ip.dscp.name:* | stats sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as Throughput | del network.packets.total",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) | flow.in.ip.dscp.name:* | stats sum(network.packets) network.packets.total | math network.packets.total/(60000/1000) as Throughput | del network.packets.total",
           "hide": false,
           "queryType": "statsRange",
           "refId": "B"
@@ -1611,20 +1611,25 @@
   "templating": {
     "list": [
       {
-        "baseFilters": [],
-        "datasource": {
-          "type": "victoriametrics-logs-datasource",
-          "uid": "P022A0A8F82CACB18"
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Flow Exporter",
+        "multi": true,
+        "name": "flowexp",
+        "options": [],
+        "query": {
+          "field": "host.name",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
         },
-        "defaultKeys": [
-          {
-            "text": "Flow Exporter",
-            "value": " host.name"
-          }
-        ],
-        "filters": [],
-        "name": "Filter",
-        "type": "adhoc"
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
       }
     ]
   },
@@ -1636,6 +1641,6 @@
   "timezone": "browser",
   "title": "Traffic Details",
   "uid": "202e21e8-16f1-431b-8a63-540c95883919",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }

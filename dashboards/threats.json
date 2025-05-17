@@ -131,7 +131,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | sec.threat.name:* (-network.community_id:=`` OR -flow.conversation.id:=``) | stats count(sec.threat.name)",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND l4.session.established:contains_any(${sessionest:doublequote}) | sec.threat.name:* (-network.community_id:=`` OR -flow.conversation.id:=``) | stats count(sec.threat.name)",
           "queryType": "stats",
           "refId": "A"
         }
@@ -223,7 +223,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | network.community_id:* sec.threat.name: * | unroll sec.threat.name | stats by (sec.threat.name) count_uniq(network.community_id) threatcount | last 25 by(threatcount)",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND l4.session.established:contains_any(${sessionest:doublequote}) | network.community_id:* sec.threat.name: * | unroll sec.threat.name | stats by (sec.threat.name) count_uniq(network.community_id) threatcount | last 25 by(threatcount)",
           "queryType": "statsRange",
           "refId": "A"
         }
@@ -295,7 +295,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | sec.threat.name:* | stats count_uniq(network.community_id)",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND l4.session.established:contains_any(${sessionest:doublequote}) | sec.threat.name:* | stats count_uniq(network.community_id)",
           "queryType": "stats",
           "refId": "A"
         }
@@ -365,7 +365,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | sec.threat.name:* network.community_id:* | keep sec.threat.name, network.community_id | unroll sec.threat.name",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND l4.session.established:contains_any(${sessionest:doublequote}) | sec.threat.name:* network.community_id:* | keep sec.threat.name, network.community_id | unroll sec.threat.name",
           "maxLines": 1000000,
           "queryType": "instant",
           "refId": "A"
@@ -529,7 +529,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | -flow.client.as.label:=\"PRIVATE\" client.domain:* client.ip:* sec.threat.name:* network.community_id:* | keep client.domain, client.ip, network.community_id",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND l4.session.established:contains_any(${sessionest:doublequote}) | -flow.client.as.label:=\"PRIVATE\" client.domain:* client.ip:* sec.threat.name:* network.community_id:* | keep client.domain, client.ip, network.community_id",
           "maxLines": 1000000,
           "queryType": "instant",
           "refId": "A"
@@ -701,7 +701,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | flow.client.as.label:=\"PRIVATE\" client.domain:* client.ip:* sec.threat.name:* network.community_id:* | keep client.domain, client.ip, network.community_id",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND l4.session.established:contains_any(${sessionest:doublequote}) | flow.client.as.label:=\"PRIVATE\" client.domain:* client.ip:* sec.threat.name:* network.community_id:* | keep client.domain, client.ip, network.community_id",
           "queryType": "instant",
           "refId": "A"
         }
@@ -885,7 +885,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | flow.server.as.label:=\"PRIVATE\" server.domain:* server.ip:* sec.threat.name:* network.community_id:* | keep server.domain, server.ip, network.community_id",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND l4.session.established:contains_any(${sessionest:doublequote}) | flow.server.as.label:=\"PRIVATE\" server.domain:* server.ip:* sec.threat.name:* network.community_id:* | keep server.domain, server.ip, network.community_id",
           "queryType": "instant",
           "refId": "A"
         }
@@ -1020,28 +1020,67 @@
   "templating": {
     "list": [
       {
-        "baseFilters": [],
-        "datasource": {
-          "type": "victoriametrics-logs-datasource",
-          "uid": "eelgdhpsgrqpse"
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Flow Exporter",
+        "multi": true,
+        "name": "flowexp",
+        "options": [],
+        "query": {
+          "field": "host.name",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
         },
-        "defaultKeys": [
-          {
-            "text": "Flow Exporter",
-            "value": " host.name\r"
-          },
-          {
-            "text": "Service",
-            "value": " flow.server.l4.port.name\r"
-          },
-          {
-            "text": "Session Established",
-            "value": " l4.session.established"
-          }
-        ],
-        "filters": [],
-        "name": "Filter",
-        "type": "adhoc"
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Service",
+        "multi": true,
+        "name": "service",
+        "options": [],
+        "query": {
+          "field": "flow.src.l4.port.name",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Session Established",
+        "multi": true,
+        "name": "sessionest",
+        "options": [],
+        "query": {
+          "field": "l4.session.established",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
       }
     ]
   },
@@ -1053,6 +1092,6 @@
   "timezone": "browser",
   "title": "Threats",
   "uid": "3c4a8e1b-98e2-4ace-81f6-639e26cc6217",
-  "version": 1,
+  "version": 4,
   "weekStart": ""
 }

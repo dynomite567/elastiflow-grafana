@@ -132,7 +132,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | client.ip:* server.ip:* | stats count()",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND flow.export.version.name:contains_any(${flowtype:doublequote}) | client.ip:* server.ip:* | stats count()",
           "queryType": "stats",
           "refId": "A"
         }
@@ -226,7 +226,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | client.ip:* server.ip:* | stats by (flow.export.version.name) count() count | math count / (60000/1000) | del count",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND flow.export.version.name:contains_any(${flowtype:doublequote}) | client.ip:* server.ip:* | stats by (flow.export.version.name) count() count | math count / (60000/1000) | del count",
           "queryType": "statsRange",
           "refId": "A"
         }
@@ -298,7 +298,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | flow.conversation.id:* | stats count_uniq(flow.conversation.id)",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND flow.export.version.name:contains_any(${flowtype:doublequote}) | flow.conversation.id:* | stats count_uniq(flow.conversation.id)",
           "queryType": "stats",
           "refId": "A"
         }
@@ -389,7 +389,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | keep _time, flow.export.version.name, flow.conversation.id, host.name, client.domain, server.domain, flow.server.l4.port.name, network.bytes, network.packets | sort by (_time desc)",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND flow.export.version.name:contains_any(${flowtype:doublequote}) | keep _time, flow.export.version.name, flow.conversation.id, host.name, client.domain, server.domain, flow.server.l4.port.name, network.bytes, network.packets | sort by (_time desc)",
           "maxLines": 10000,
           "queryType": "instant",
           "refId": "A"
@@ -452,24 +452,46 @@
   "templating": {
     "list": [
       {
-        "baseFilters": [],
-        "datasource": {
-          "type": "loki",
-          "uid": "P8E80F9AEF21F6940"
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Flow Exporter",
+        "multi": true,
+        "name": "flowexp",
+        "options": [],
+        "query": {
+          "field": "host.name",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
         },
-        "defaultKeys": [
-          {
-            "text": "Flow Exporter",
-            "value": " host.name\r"
-          },
-          {
-            "text": "Flow Type",
-            "value": " flow.export.version.name"
-          }
-        ],
-        "filters": [],
-        "name": "Filters",
-        "type": "adhoc"
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Flow Type",
+        "multi": true,
+        "name": "flowtype",
+        "options": [],
+        "query": {
+          "field": "flow.export.version.name",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
       }
     ]
   },
@@ -481,6 +503,6 @@
   "timezone": "browser",
   "title": "Flow Records",
   "uid": "5c0a1a94-75b5-452f-9f82-1e71af270e10",
-  "version": 2,
+  "version": 5,
   "weekStart": ""
 }

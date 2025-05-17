@@ -158,7 +158,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | stats by (host.name) uniq_values(flow.export.version.name) export_version, sum(network.bytes) bytes_total, sum(network.packets) packets_total, count() | unroll export_version",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND flow.export.version.name:contains_any(${flowtype:doublequote}) | stats by (host.name) uniq_values(flow.export.version.name) export_version, sum(network.bytes) bytes_total, sum(network.packets) packets_total, count() | unroll export_version",
           "maxLines": 1000000,
           "queryType": "instant",
           "refId": "A"
@@ -320,7 +320,7 @@
             "fields": {},
             "sort": [
               {
-                "desc": false,
+                "desc": true,
                 "field": "Records"
               }
             ]
@@ -414,7 +414,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | host.name:* | stats by (host.name) count() host_count | math host_count / (60000/1000) | drop host_count",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND flow.export.version.name:contains_any(${flowtype:doublequote}) | host.name:* | stats by (host.name) count() host_count | math host_count / (60000/1000) | drop host_count",
           "queryType": "statsRange",
           "refId": "A"
         }
@@ -519,7 +519,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | host.name:* | stats by (host.name) sum(network.bytes) total_bytes | math total_bytes*8/(60000/1000) | drop total_bytes",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND flow.export.version.name:contains_any(${flowtype:doublequote}) | host.name:* | stats by (host.name) sum(network.bytes) total_bytes | math total_bytes*8/(60000/1000) | drop total_bytes",
           "queryType": "statsRange",
           "refId": "A"
         }
@@ -624,7 +624,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | host.name:* | stats by (host.name) sum(network.packets) total_packets | math total_packets/(60000/1000) | drop total_packets",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND flow.export.version.name:contains_any(${flowtype:doublequote}) | host.name:* | stats by (host.name) sum(network.packets) total_packets | math total_packets/(60000/1000) | drop total_packets",
           "queryType": "statsRange",
           "refId": "A"
         }
@@ -652,24 +652,46 @@
   "templating": {
     "list": [
       {
-        "baseFilters": [],
-        "datasource": {
-          "type": "victoriametrics-logs-datasource",
-          "uid": "eelgdhpsgrqpse"
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Flow Exporter",
+        "multi": true,
+        "name": "flowexp",
+        "options": [],
+        "query": {
+          "field": "host.name",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
         },
-        "defaultKeys": [
-          {
-            "text": "Flow Type",
-            "value": "flow.export.version.name\r"
-          },
-          {
-            "text": "Flow Exporter",
-            "value": "host.name"
-          }
-        ],
-        "filters": [],
-        "name": "Filter",
-        "type": "adhoc"
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Flow Type",
+        "multi": true,
+        "name": "flowtype",
+        "options": [],
+        "query": {
+          "field": "flow.export.version.name",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
       }
     ]
   },
@@ -681,6 +703,6 @@
   "timezone": "browser",
   "title": "Exporters - Metrics",
   "uid": "0e890aaa-43ac-45a5-b12b-a75114c746e5",
-  "version": 3,
+  "version": 8,
   "weekStart": ""
 }

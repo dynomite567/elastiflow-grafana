@@ -131,7 +131,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | client.geo.country_name:* | stats by (client.geo.country_name) count() count | last 10 by(count)",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND client.domain:contains_any(${client:doublequote}) AND server.domain:contains_any(${server:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND l4.session.established:contains_any(${sessionest:doublequote}) | client.geo.country_name:* | stats by (client.geo.country_name) count() count | last 10 by(count)",
           "queryType": "stats",
           "refId": "A"
         }
@@ -362,7 +362,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | client.geo.location:* | extract \"<lat>,<long>\" from client.geo.location | keep client.domain, client.ip, network.bytes, network.packets, lat, long",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND client.domain:contains_any(${client:doublequote}) AND server.domain:contains_any(${server:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND l4.session.established:contains_any(${sessionest:doublequote}) | client.geo.location:* | extract \"<lat>,<long>\" from client.geo.location | keep client.domain, client.ip, network.bytes, network.packets, lat, long",
           "maxLines": 10000,
           "queryType": "instant",
           "refId": "A"
@@ -373,7 +373,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | server.geo.location:* | extract \"<lat>,<long>\" from server.geo.location | keep server.domain, server.ip, network.bytes, network.packets, lat, long",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND client.domain:contains_any(${client:doublequote}) AND server.domain:contains_any(${server:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND l4.session.established:contains_any(${sessionest:doublequote}) | server.geo.location:* | extract \"<lat>,<long>\" from server.geo.location | keep server.domain, server.ip, network.bytes, network.packets, lat, long",
           "hide": false,
           "maxLines": 10000,
           "queryType": "instant",
@@ -468,7 +468,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | server.geo.country_name:* | stats by (server.geo.country_name) count() count | last 10 by(count)",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND client.domain:contains_any(${client:doublequote}) AND server.domain:contains_any(${server:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND l4.session.established:contains_any(${sessionest:doublequote}) | server.geo.country_name:* | stats by (server.geo.country_name) count() count | last 10 by(count)",
           "queryType": "stats",
           "refId": "A"
         }
@@ -546,7 +546,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | client.geo.city_name:* | stats by (client.geo.city_name) count() count | last 10 by(count)",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND client.domain:contains_any(${client:doublequote}) AND server.domain:contains_any(${server:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND l4.session.established:contains_any(${sessionest:doublequote}) | client.geo.city_name:* | stats by (client.geo.city_name) count() count | last 10 by(count)",
           "queryType": "stats",
           "refId": "A"
         }
@@ -624,7 +624,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | server.geo.city_name:* | stats by (server.geo.city_name) count() count | last 10 by(count)",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND client.domain:contains_any(${client:doublequote}) AND server.domain:contains_any(${server:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND l4.session.established:contains_any(${sessionest:doublequote}) | server.geo.city_name:* | stats by (server.geo.city_name) count() count | last 10 by(count)",
           "queryType": "stats",
           "refId": "A"
         }
@@ -702,7 +702,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | flow.client.geo.tz.name:* | stats by (flow.client.geo.tz.name) count() count | last 10 by(count)",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND client.domain:contains_any(${client:doublequote}) AND server.domain:contains_any(${server:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND l4.session.established:contains_any(${sessionest:doublequote}) | flow.client.geo.tz.name:* | stats by (flow.client.geo.tz.name) count() count | last 10 by(count)",
           "queryType": "stats",
           "refId": "A"
         }
@@ -780,7 +780,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | flow.server.geo.tz.name:* | stats by (flow.server.geo.tz.name) count() count | last 10 by(count)",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND client.domain:contains_any(${client:doublequote}) AND server.domain:contains_any(${server:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND l4.session.established:contains_any(${sessionest:doublequote}) | flow.server.geo.tz.name:* | stats by (flow.server.geo.tz.name) count() count | last 10 by(count)",
           "queryType": "stats",
           "refId": "A"
         }
@@ -808,37 +808,109 @@
   "templating": {
     "list": [
       {
-        "allowCustomValue": true,
-        "baseFilters": [],
-        "datasource": {
-          "type": "victoriametrics-logs-datasource",
-          "uid": "P022A0A8F82CACB18"
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Flow Exporter",
+        "multi": true,
+        "name": "flowexp",
+        "options": [],
+        "query": {
+          "field": "host.name",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
         },
-        "defaultKeys": [
-          {
-            "text": "Flow Exporter",
-            "value": " host.name"
-          },
-          {
-            "text": "Client",
-            "value": " client.domain"
-          },
-          {
-            "text": "Server",
-            "value": " server.domain"
-          },
-          {
-            "text": "Service",
-            "value": " flow.server.l4.port.name"
-          },
-          {
-            "text": "Session Established",
-            "value": " l4.session.established"
-          }
-        ],
-        "filters": [],
-        "name": "Filter",
-        "type": "adhoc"
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Client",
+        "multi": true,
+        "name": "client",
+        "options": [],
+        "query": {
+          "field": "client.domain",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Server",
+        "multi": true,
+        "name": "server",
+        "options": [],
+        "query": {
+          "field": "server.domain",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Service",
+        "multi": true,
+        "name": "service",
+        "options": [],
+        "query": {
+          "field": "flow.server.l4.port.name",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Session Established",
+        "multi": true,
+        "name": "sessionest",
+        "options": [],
+        "query": {
+          "field": "l4.session.established",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
       }
     ]
   },
@@ -850,6 +922,6 @@
   "timezone": "browser",
   "title": "GeoIP",
   "uid": "2da62db1-52ea-4ae9-af04-4efd0bf165bb",
-  "version": 3,
+  "version": 5,
   "weekStart": ""
 }

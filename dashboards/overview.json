@@ -127,7 +127,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | client.domain:* | stats by (client.domain) sum(network.bytes) network.bytes.total | last 20 by(network.bytes.total)",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND client.domain:contains_any(${client:doublequote}) AND server.domain:contains_any(${server:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND l4.session.established:contains_any(${sessionest:doublequote}) | client.domain:* | stats by (client.domain) sum(network.bytes) network.bytes.total | last 20 by(network.bytes.total)",
           "queryType": "stats",
           "refId": "A",
           "step": ""
@@ -210,7 +210,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | flow.server.l4.port.name:* | stats by (flow.server.l4.port.name) sum(network.bytes) network.bytes.total | last 20 by(network.bytes.total)",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND client.domain:contains_any(${client:doublequote}) AND server.domain:contains_any(${server:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND l4.session.established:contains_any(${sessionest:doublequote}) | flow.server.l4.port.name:* | stats by (flow.server.l4.port.name) sum(network.bytes) network.bytes.total | last 20 by(network.bytes.total)",
           "queryType": "stats",
           "refId": "A"
         }
@@ -289,7 +289,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | tcp.flags.tags:* | stats by (tcp.flags.tags) count() tcp.flags.tags.count | last 20 by(tcp.flags.tags.count)",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND client.domain:contains_any(${client:doublequote}) AND server.domain:contains_any(${server:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND l4.session.established:contains_any(${sessionest:doublequote}) | tcp.flags.tags:* | stats by (tcp.flags.tags) count() tcp.flags.tags.count | last 20 by(tcp.flags.tags.count)",
           "queryType": "stats",
           "refId": "A"
         }
@@ -374,7 +374,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | server.domain:* | stats by (server.domain) sum(network.bytes) network.bytes.total | last 20 by(network.bytes.total)",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND client.domain:contains_any(${client:doublequote}) AND server.domain:contains_any(${server:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND l4.session.established:contains_any(${sessionest:doublequote}) | server.domain:* | stats by (server.domain) sum(network.bytes) network.bytes.total | last 20 by(network.bytes.total)",
           "queryType": "stats",
           "refId": "A"
         }
@@ -456,7 +456,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | network.transport:* | stats by (network.transport) sum(network.bytes) network.bytes.total | last 20 by(network.bytes.total)",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND client.domain:contains_any(${client:doublequote}) AND server.domain:contains_any(${server:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND l4.session.established:contains_any(${sessionest:doublequote}) | network.transport:* | stats by (network.transport) sum(network.bytes) network.bytes.total | last 20 by(network.bytes.total)",
           "queryType": "stats",
           "refId": "A"
         }
@@ -535,7 +535,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | sec.threat.name:* | unroll sec.threat.name | stats by (sec.threat.name) count() sec.threat.name.count | last 16 by(sec.threat.name.count)",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND client.domain:contains_any(${client:doublequote}) AND server.domain:contains_any(${server:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND l4.session.established:contains_any(${sessionest:doublequote}) | sec.threat.name:* | unroll sec.threat.name | stats by (sec.threat.name) count() sec.threat.name.count | last 16 by(sec.threat.name.count)",
           "queryType": "stats",
           "refId": "A"
         }
@@ -567,37 +567,109 @@
   "templating": {
     "list": [
       {
-        "baseFilters": [],
-        "datasource": {
-          "type": "victoriametrics-logs-datasource",
-          "uid": "eelgdhpsgrqpse"
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Flow Exporter",
+        "multi": true,
+        "name": "flowexp",
+        "options": [],
+        "query": {
+          "field": "host.name",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
         },
-        "defaultKeys": [
-          {
-            "text": "Flow Exporter",
-            "value": " host.name\r"
-          },
-          {
-            "text": "Client",
-            "value": " client.domain\r"
-          },
-          {
-            "text": "Server",
-            "value": " server.domain\r"
-          },
-          {
-            "text": "Service",
-            "value": " flow.server.l4.port.name\r"
-          },
-          {
-            "text": "Session Established",
-            "value": " l4.session.established"
-          }
-        ],
-        "description": "",
-        "filters": [],
-        "name": "Filter",
-        "type": "adhoc"
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Client",
+        "multi": true,
+        "name": "client",
+        "options": [],
+        "query": {
+          "field": "client.domain",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Server",
+        "multi": true,
+        "name": "server",
+        "options": [],
+        "query": {
+          "field": "server.domain",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Service",
+        "multi": true,
+        "name": "service",
+        "options": [],
+        "query": {
+          "field": "flow.server.l4.port.name",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Session Established",
+        "multi": true,
+        "name": "sessionest",
+        "options": [],
+        "query": {
+          "field": "l4.session.established",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
       }
     ]
   },
@@ -606,9 +678,9 @@
     "to": "now"
   },
   "timepicker": {},
-  "timezone": "",
+  "timezone": "browser",
   "title": "Overview",
   "uid": "5c83680f-6376-4312-a455-f9452afe78d2",
-  "version": 4,
+  "version": 8,
   "weekStart": ""
 }

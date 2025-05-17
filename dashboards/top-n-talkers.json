@@ -220,7 +220,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | flow.server.l4.port.name:* | stats by (flow.server.l4.port.name) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | last 20 by(throughput) | del network.bytes.total",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND client.domain:contains_any(${client:doublequote}) AND server.domain:contains_any(${server:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND flow.locality:contains_any(${flowlocality:doublequote}) | stats by (flow.server.l4.port.name) sum(network.bytes) network.bytes.total | math network.bytes.total*8/(60000/1000) as throughput | last 20 by(throughput) | del network.bytes.total",
           "queryType": "statsRange",
           "refId": "A"
         },
@@ -241,9 +241,6 @@
         {
           "id": "labelsToFields",
           "options": {
-            "keepLabels": [
-              "flow.server.l4.port.name"
-            ],
             "valueLabel": "flow.server.l4.port.name"
           }
         },
@@ -322,7 +319,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | client.domain:* | stats by (client.domain) sum(network.bytes) network.bytes.total | last 10 by(network.bytes.total)",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND client.domain:contains_any(${client:doublequote}) AND server.domain:contains_any(${server:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND flow.locality:contains_any(${flowlocality:doublequote}) | client.domain:* | stats by (client.domain) sum(network.bytes) network.bytes.total | last 10 by(network.bytes.total)",
           "queryType": "stats",
           "refId": "A"
         }
@@ -406,7 +403,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | server.domain:* | stats by (server.domain) sum(network.bytes) network.bytes.total | last 10 by(network.bytes.total)",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND client.domain:contains_any(${client:doublequote}) AND server.domain:contains_any(${server:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND flow.locality:contains_any(${flowlocality:doublequote}) | server.domain:* | stats by (server.domain) sum(network.bytes) network.bytes.total | last 10 by(network.bytes.total)",
           "queryType": "stats",
           "refId": "A"
         }
@@ -504,7 +501,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | stats by (client.domain) uniq_values(client.ip) client.ip, sum(network.bytes) bytes_total, sum(network.packets) packets_total, count_uniq(network.community_id) sessions | unroll client.ip | keep client.domain, client.ip, bytes_total, packets_total, sessions",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND client.domain:contains_any(${client:doublequote}) AND server.domain:contains_any(${server:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND flow.locality:contains_any(${flowlocality:doublequote}) | stats by (client.domain) uniq_values(client.ip) client.ip, sum(network.bytes) bytes_total, sum(network.packets) packets_total, count_uniq(network.community_id) sessions | unroll client.ip | keep client.domain, client.ip, bytes_total, packets_total, sessions",
           "maxLines": 1000000,
           "queryType": "instant",
           "refId": "A"
@@ -736,7 +733,7 @@
             "uid": "${DS_VICTORIALOGS}"
           },
           "editorMode": "code",
-          "expr": "{service=\"elastiflow\"} | stats by (server.domain) uniq_values(server.ip) server.ip, sum(network.bytes) bytes_total, sum(network.packets) packets_total, count_uniq(network.community_id) sessions | unroll server.ip | keep server.domain, server.ip, bytes_total, packets_total, sessions",
+          "expr": "{service=\"elastiflow\"} | host.name:contains_any(${flowexp:doublequote}) AND client.domain:contains_any(${client:doublequote}) AND server.domain:contains_any(${server:doublequote}) AND flow.server.l4.port.name:contains_any(${service:doublequote}) AND flow.locality:contains_any(${flowlocality:doublequote}) | stats by (server.domain) uniq_values(server.ip) server.ip, sum(network.bytes) bytes_total, sum(network.packets) packets_total, count_uniq(network.community_id) sessions | unroll server.ip | keep server.domain, server.ip, bytes_total, packets_total, sessions",
           "maxLines": 1000000,
           "queryType": "instant",
           "refId": "A"
@@ -910,36 +907,109 @@
   "templating": {
     "list": [
       {
-        "baseFilters": [],
-        "datasource": {
-          "type": "victoriametrics-logs-datasource",
-          "uid": "P022A0A8F82CACB18"
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Flow Exporter",
+        "multi": true,
+        "name": "flowexp",
+        "options": [],
+        "query": {
+          "field": "host.name",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
         },
-        "defaultKeys": [
-          {
-            "text": "Flow Exporter",
-            "value": " host.name\r"
-          },
-          {
-            "text": "Client",
-            "value": " client.domain\r"
-          },
-          {
-            "text": "Server",
-            "value": " server.domain\r"
-          },
-          {
-            "text": "Service",
-            "value": " flow.server.l4.port.name\r"
-          },
-          {
-            "text": "Traffic Locality",
-            "value": " flow.locality"
-          }
-        ],
-        "filters": [],
-        "name": "Filter",
-        "type": "adhoc"
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Client",
+        "multi": true,
+        "name": "client",
+        "options": [],
+        "query": {
+          "field": "client.domain",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Server",
+        "multi": true,
+        "name": "server",
+        "options": [],
+        "query": {
+          "field": "server.domain",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Service",
+        "multi": true,
+        "name": "service",
+        "options": [],
+        "query": {
+          "field": "flow.server.l4.port.name",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allValue": "*",
+        "allowCustomValue": false,
+        "current": {},
+        "definition": "",
+        "includeAll": true,
+        "label": "Flow Locality",
+        "multi": true,
+        "name": "flowlocality",
+        "options": [],
+        "query": {
+          "field": "flow.locality",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
       }
     ]
   },
@@ -951,6 +1021,6 @@
   "timezone": "browser",
   "title": "Top-N - Talkers",
   "uid": "fd1ed16e-758b-4a43-b681-796f08a684bb",
-  "version": 6,
+  "version": 7,
   "weekStart": ""
 }
