@@ -1,6 +1,6 @@
 # Elastiflow Grafana (KVLAG) Stack
 
-A log stack to visulaize NetFlows that are processed and collected by Elastiflow in [Grafana](https://grafana.com/oss/grafana/). Uses [Kafka](https://github.com/apache/kafka) as a data ingester, [Grafana Alloy](https://grafana.com/oss/alloy) as a scraper, and [VictoriaLogs](https://victoriametrics.com/products/victorialogs/) as a log storage backend.
+A log stack to visulaize NetFlows that are processed and collected by Elastiflow in [Grafana](https://github.com/grafana/grafana/). Uses [Kafka](https://github.com/apache/kafka) as a data ingester, [Grafana Alloy](https://github.com/grafana/alloy) as a scraper, and [VictoriaLogs](https://victoriametrics.com/products/victorialogs/) as a log storage backend.
 
 ## Prerequisites
 
